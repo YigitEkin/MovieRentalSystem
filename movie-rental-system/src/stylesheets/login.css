@@ -16,7 +16,10 @@
 }
 
 .logo {
-  max-width: 500px;
+  background-image: url("../images/logo.jpeg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .submit-btn {
@@ -27,7 +30,7 @@
 .center {
   width: 100vw;
   height: 100vh;
-  background-color: rgb(15, 14, 14);
+  background-color: rgb(0, 0, 0);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -43,4 +46,29 @@
 
 .text-red {
   color: red;
+}
+
+.link {
+}
+
+.black-bg {
+  background-color: black;
+}
+
+@media screen and (max-width: 767px) {
+  .login-form {
+    width: 100%;
+  }
+  .border-left-red {
+    border-left: none;
+  }
+  .box-shadow {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+  }
+  .logo-small {
+    width: 60%;
+    display: block;
+  }
 }

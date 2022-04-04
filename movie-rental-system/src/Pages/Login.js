@@ -3,13 +3,15 @@ import "../stylesheets/login.css"
 import Logo from "../images/logo.jpeg"
 const Login = () => {
   return (
-      <div className="center">
-            <div className='container box-shadow p-5'>
+      <div className="center black-bg">
+            <div className='container box-shadow p-5 black-bg'>
+            <div className="row d-flex aling-items-center justify-content-center mt-5">
+                <img src={Logo} alt="logo" className='d-md-none d-block logo-small' />
+            </div>
             <div className="row">
-                <div className="col-6">
-                    <img src={Logo} alt="logo" className='logo'/>
+                <div className="col-md-6 logo d-md-block d-none">
                 </div>
-                <div className="col-6 border-left-red">
+                <div className="col-md-6 col-12 border-left-red">
                     <form className='login-form'>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Username</label>
@@ -33,6 +35,9 @@ const Login = () => {
                             <div className="col-12 ml-2 p-2">
                                 <a href="./Signup.js">
                                     <p className="text-red large-text">Don't have an account?</p>
+                                </a>
+                                <a href="ForgotPassword.js">
+                                <p className="text-red large-text">Forgot my Password</p>
                                 </a>
                             </div>
                         </div>
