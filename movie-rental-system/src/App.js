@@ -1,8 +1,11 @@
 import Login from "./Pages/Login";
+import SignUp from "./Pages/Signup";
 
 function App() {
   return (
-    <Login/>
+    <div className="div">
+      <SignUp></SignUp>
+    </div>
   );
 }
 
