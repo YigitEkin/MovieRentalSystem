@@ -1,12 +1,7 @@
-import Login from "./Pages/Login";
+import React, { useState } from "react";
 import SignUp from "./Pages/Signup";
 
-function App() {
-  return (
-    <div className="div">
-      <SignUp></SignUp>
-    </div>
-  );
-}
-
+const App = () => {
+  return <SignUp />;
+};
 export default App;
