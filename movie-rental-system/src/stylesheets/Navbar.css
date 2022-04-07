@@ -1,0 +1,57 @@
+.dark-bg {
+  background-color: black;
+}
+
+.border-left-red {
+  border-left: solid 5px red;
+}
+
+.box-shadow {
+  box-shadow: 0px 0px 98px 63px rgba(255, 0, 0, 0.75);
+  -webkit-box-shadow: 0px 0px 98px 63px rgba(255, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 98px 63px rgba(255, 0, 0, 0.75);
+}
+.login-form {
+  color: whitesmoke;
+}
+
+.text-gray {
+  color: rgb(172, 169, 169);
+}
+
+.logo {
+  height: 5rem;
+  width: 5rem;
+  background-color: black;
+}
+
+.submit-btn {
+  background-color: red;
+  color: white;
+}
+
+.allpage {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(0, 0, 0);
+}
+
+.large-text {
+  font-size: 1rem;
+}
+
+.m-none {
+  margin: 0%;
+}
+
+.text-red {
+  color: red;
+}
+
+.navbar-style {
+  background-color: red;
+  color: white;
+}
+.black-bg {
+  background-color: black;
+}
