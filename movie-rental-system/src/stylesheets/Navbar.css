@@ -55,3 +55,7 @@
 .black-bg {
   background-color: black;
 }
+
+.no-style {
+  list-style: none;
+}
