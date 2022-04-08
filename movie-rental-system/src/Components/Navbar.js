@@ -49,7 +49,12 @@ const Navbar = ({ name }) => (
           </li>
           <li className="nav-item">
             <a className="nav-link text-white" href="#">
-              Recommend Movie
+              Friends
+            </a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link text-white" href="#">
+              Payment
             </a>
           </li>
         </ul>

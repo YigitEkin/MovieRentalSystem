@@ -16,7 +16,7 @@ const MovieCard = ({
     <div className="card-body">
       <div className="row">
         <h5 className="card-title col-6">{title}</h5>
-        <h5 className="card-title col-6 text-right ">{`Rating:  ${rating}/5`}</h5>
+        <h5 className="card-title col-6 text-right ">{`Rating:  ${rating}/10`}</h5>
       </div>
       <div className="row">
         <h5 className="card-title col-12">{`Director:  ${director}`}</h5>

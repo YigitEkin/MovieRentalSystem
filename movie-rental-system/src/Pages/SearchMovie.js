@@ -3,7 +3,7 @@ import "../stylesheets/SearchMovie.css";
 import Navbar from "../Components/Navbar";
 import SignUp from "./Signup";
 import MovieCard from "../Components/MovieCard";
-import Logo from "../images/breakingbad.jpeg";
+import Logo from "../images/gora.jpeg";
 
 const SearchMovie = () => {
   const [filter, setFilter] = useState("");
@@ -83,7 +83,7 @@ const SearchMovie = () => {
           </div>
           <div className="col-1"></div>
           <div className="col-4">
-            <h1 className="text-red">Sort By Price:</h1>
+            <h1 className="text-red">Sort By Rating:</h1>
             <div class="form-check form-check-inline">
               <input
                 class="form-check-input"
@@ -116,14 +116,14 @@ const SearchMovie = () => {
         </div>
         <MovieCard
           img_url={Logo}
-          title={"Breaking Bad"}
-          rating={5}
+          title={"Gora"}
+          rating={8.1}
           description={
-            "Walter White, a chemistry teacher, discovers that he has cancer and decides to get into the meth-making business to repay his medical debts. His priorities begin to change when he partners with Jesse."
+            "A slick young Turk kidnapped by extraterrestrials shows his great « humanitarian spirit » by outwitting the evil commander-in-chief of the planet of G.O.R.A."
           }
-          year={2008}
-          director={"Vince Gilligan"}
-          genre={"Drama"}
+          year={2003}
+          director={"Ömer Faruk Sorak"}
+          genre={"Comedy"}
           price={"20.99$"}
         />
       </div>
