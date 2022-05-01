@@ -10,15 +10,16 @@ import java.util.Date;
 @Entity
 @Table(name = "user")
 @Data
+@Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
     @Id
-    String user_name;
+    private String user_name;
 
-    String password;
-    String user_email;
+    private String password;
+    private String user_email;
 
     @Temporal(TemporalType.DATE)
-    Date birth_year;
+    private Date birth_year;
 }
