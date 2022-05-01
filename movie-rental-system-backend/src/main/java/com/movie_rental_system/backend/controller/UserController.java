@@ -18,7 +18,7 @@ public class UserController {
     @Autowired
     public UserController(UserService userService){
         this.userService = userService;
-        // dummy commit
+        // oguz branch
     }
 
     @GetMapping
