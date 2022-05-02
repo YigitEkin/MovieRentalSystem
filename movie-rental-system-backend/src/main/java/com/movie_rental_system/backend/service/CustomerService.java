@@ -60,12 +60,10 @@ public class CustomerService {
     public Customer updateCustomer(String customer_name, Map<String, String> json) {
         try {
             if(newCustomerRepository.existsById(customer_name)){
-                newCustomerRepository.deleteById(customer_name);
                 return newCustomerRepository.save(new NewCustomer(customer_name, json.get("password"), json.get("user_email"),
                         new SimpleDateFormat("yyyy-MM-dd").parse(json.get("birth_year")), Integer.parseInt(json.get("balance")), json.get("promotion_code")));
             }
             else{
-                repeatCustomerRepository.deleteById(customer_name);
                 return repeatCustomerRepository.save(new RepeatCustomer(customer_name, json.get("password"), json.get("user_email"),
                         new SimpleDateFormat("yyyy-MM-dd").parse(json.get("birth_year")), Integer.parseInt(json.get("balance")), json.get("customer_rank"), json.get("discount_code")));
             }

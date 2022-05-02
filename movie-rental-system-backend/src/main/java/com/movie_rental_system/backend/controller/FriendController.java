@@ -27,7 +27,12 @@ public class FriendController {
     }
 
     // create friend
-    // json example: {"customer_name":"customer_name", "friend_name":"friend_name", "friend_request_date": "2020-01-01"}
+    // example request body:
+    /* {
+          "customer_name":"customer_name",
+          "friend_name":"friend_name",
+          "friend_request_date": "2020-01-01"
+    } */
     @PostMapping
     public ResponseEntity<Friend> createFriend(@RequestBody Map<String, String> json) {
         return ResponseEntity.ok(friendService.addFriend(json));

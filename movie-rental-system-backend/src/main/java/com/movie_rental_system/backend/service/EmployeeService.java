@@ -39,7 +39,6 @@ public class EmployeeService {
     // update employee
     public Employee updateEmployee(String employeeName, Employee employee) {
         if(employeeRepository.existsById(employeeName)) {
-            employeeRepository.deleteById(employeeName);
             return employeeRepository.save(employee);
         }
         return null;

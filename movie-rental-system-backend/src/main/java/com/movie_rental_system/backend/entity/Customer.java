@@ -22,15 +22,20 @@ public class Customer extends User {
     @JsonIgnore
     private List<Friend> friends;
 
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Card> cards;
+
     public Customer(String user_name, String password, String email, Date birthday, Integer balance) {
         super(user_name, password, email, birthday);
         this.balance = balance;
     }
 
-    public Customer(String user_name, String password, String email, Date birthday, Integer balance, List<Friend> friends) {
+    public Customer(String user_name, String password, String email, Date birthday, Integer balance, List<Friend> friends, List<Card> cards) {
         super(user_name, password, email, birthday);
         this.balance = balance;
         this.friends = friends;
+        this.cards = cards;
     }
 
     @Override
