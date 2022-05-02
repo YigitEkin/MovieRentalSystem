@@ -1,6 +1,5 @@
 package com.movie_rental_system.backend.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
