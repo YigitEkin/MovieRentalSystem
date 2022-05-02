@@ -26,32 +26,6 @@ public class FriendController {
         return ResponseEntity.ok(friendService.getAllFriends());
     }
 
-    // get friends of a customer
-    @GetMapping("/{customer_name}")
-    public ResponseEntity<List<Friend>> getFriendsOfCustomer(@PathVariable String customer_name) {
-        return ResponseEntity.ok(friendService.getFriendsOfCustomer(customer_name));
-    }
-
-    // get specific friend, order is not important
-    @GetMapping("/{customer_name}/{friend_name}")
-    public ResponseEntity<Friend> getFriend(@PathVariable String customer_name, @PathVariable String friend_name) {
-        return ResponseEntity.ok(friendService.getFriend(customer_name, friend_name));
-    }
-
-    // delete friend, order is not important
-    @DeleteMapping("/{customer_name}/{friend_name}")
-    public ResponseEntity<Friend> deleteFriend(@PathVariable String customer_name, @PathVariable String friend_name) {
-        return ResponseEntity.ok(friendService.deleteFriend(customer_name, friend_name));
-    }
-
-    // update friend, order is not important
-    // json example: {"customer_name":"customer_name", "friend_name":"friend_name", "friend_request_date": "2020-01-01"}
-    @PutMapping("/{customer_name}/{friend_name}")
-    public ResponseEntity<Friend> updateFriend(@PathVariable String customer_name, @PathVariable String friend_name,
-                                               @RequestBody Map<String,String> json) {
-        return ResponseEntity.ok(friendService.updateFriend(customer_name, friend_name, json));
-    }
-
     // create friend
     // json example: {"customer_name":"customer_name", "friend_name":"friend_name", "friend_request_date": "2020-01-01"}
     @PostMapping

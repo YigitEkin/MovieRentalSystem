@@ -30,14 +30,14 @@ public class Friend implements Persistable<FriendKey>{
     @JsonIgnore
     private boolean isNew = false;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
     @Id
     @MapsId
     @JoinColumn(name = "customer_name")
     @JsonIgnoreProperties({"password", "user_email", "birth_year", "balance", "discount_code", "customer_rank", "promotion_code"})
     private Customer customer;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
     @MapsId
     @Id
     @JoinColumn(name = "friend_name")
