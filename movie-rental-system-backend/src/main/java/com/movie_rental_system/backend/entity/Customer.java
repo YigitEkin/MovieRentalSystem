@@ -26,6 +26,10 @@ public class Customer extends User {
     @JsonIgnore
     private List<Card> cards;
 
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<MovieRequest> requests;
+
     public Customer(String user_name, String password, String email, Date birthday, Integer balance) {
         super(user_name, password, email, birthday);
         this.balance = balance;
@@ -37,6 +41,8 @@ public class Customer extends User {
         this.friends = friends;
         this.cards = cards;
     }
+
+
 
     @Override
     public String toString() {

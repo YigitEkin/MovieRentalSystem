@@ -1,5 +1,6 @@
 package com.movie_rental_system.backend.service;
 
+import com.movie_rental_system.backend.entity.Card;
 import com.movie_rental_system.backend.entity.Movie;
 import com.movie_rental_system.backend.entity.User;
 import com.movie_rental_system.backend.repository.MovieRepository;
