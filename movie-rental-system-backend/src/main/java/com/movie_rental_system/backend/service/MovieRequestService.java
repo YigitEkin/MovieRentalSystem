@@ -16,7 +16,7 @@ public class MovieRequestService {
     private final MovieRequestRepository movieRequestRepository;
 
     @Autowired
-    public MovieRequestService(MovieRequestRepository repo, CustomerRepository customerRepository) {
+    public MovieRequestService(MovieRequestRepository repo) {
         this.movieRequestRepository = repo;
     }
 
