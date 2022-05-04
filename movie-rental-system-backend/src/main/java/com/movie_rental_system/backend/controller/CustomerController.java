@@ -1,12 +1,10 @@
 package com.movie_rental_system.backend.controller;
 
-import com.movie_rental_system.backend.entity.Card;
-import com.movie_rental_system.backend.entity.Customer;
-import com.movie_rental_system.backend.entity.Friend;
-import com.movie_rental_system.backend.entity.NewCustomer;
+import com.movie_rental_system.backend.entity.*;
 import com.movie_rental_system.backend.service.CardService;
 import com.movie_rental_system.backend.service.CustomerService;
 import com.movie_rental_system.backend.service.FriendService;
+import com.movie_rental_system.backend.service.MovieRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +18,14 @@ public class CustomerController {
     private final CustomerService customerService;
     private final FriendService friendService;
     private final CardService cardService;
+    private final MovieRequestService movieRequestService;
 
     @Autowired
-    public CustomerController(CustomerService customerService, FriendService friendService, CardService cardService) {
+    public CustomerController(CustomerService customerService, FriendService friendService, CardService cardService, MovieRequestService movieRequestService) {
         this.customerService = customerService;
         this.friendService = friendService;
         this.cardService = cardService;
+        this.movieRequestService = movieRequestService;
     }
 
     // -----------------customer endpoints------------------
@@ -126,6 +126,14 @@ public class CustomerController {
     @GetMapping("/{customer_name}/cards/{card_id}")
     public ResponseEntity<Card> getCard(@PathVariable String customer_name, @PathVariable Long card_id) {
         return ResponseEntity.ok(cardService.getCardOfCustomer(customer_name, card_id));
+    }
+
+
+    // -----------------movie request endpoints------------------
+    // get all movie requests of a customer
+    @GetMapping("/{customer_name}/movie_requests")
+    public ResponseEntity<List<MovieRequest>> getMovieRequests(@PathVariable String customer_name) {
+        return ResponseEntity.ok(movieRequestService.getRequestsOfCustomer(customer_name));
     }
 
 

@@ -45,9 +45,4 @@ public class MovieRequestController {
     public ResponseEntity<?> deleteMovieRequest(@PathVariable Integer id) {
         return ResponseEntity.ok(movieRequestService.deleteMovieRequest(id));
     }
-
-    @GetMapping(value = "/myMovieRequests", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<MovieRequest>> getAllMovieRequestsOfCustomer(String customerName){
-        return ResponseEntity.ok(movieRequestService.getRequestsOfCustomer(customerName));
-    }
 }
