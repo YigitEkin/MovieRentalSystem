@@ -1,7 +1,9 @@
 package com.movie_rental_system.backend.controller;
 
 import com.movie_rental_system.backend.entity.Employee;
+import com.movie_rental_system.backend.entity.Movie;
 import com.movie_rental_system.backend.service.EmployeeService;
+import com.movie_rental_system.backend.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,10 +14,13 @@ import java.util.List;
 @RequestMapping("/employees")
 public class EmployeeController {
     private final EmployeeService employeeService;
+    private final MovieService movieService;
 
     @Autowired
-    public EmployeeController(EmployeeService employeeService) {
+    public EmployeeController(EmployeeService employeeService, MovieService movieService) {
+
         this.employeeService = employeeService;
+        this.movieService = movieService;
     }
 
     // get all employees
@@ -56,5 +61,11 @@ public class EmployeeController {
     @PutMapping("/{employee_name}")
     public ResponseEntity<Employee> updateEmployee(@PathVariable String employee_name, @RequestBody Employee employee) {
         return ResponseEntity.ok(employeeService.updateEmployee(employee_name, employee));
+    }
+
+    // get registered movies of the employee
+    @GetMapping("/{employee_name}/registered_movies")
+    public ResponseEntity<List<Movie>> getEmployeeRegisteredMovies(@PathVariable String employee_name) {
+        return ResponseEntity.ok(movieService.getEmployeeRegisteredMovies(employee_name));
     }
 }

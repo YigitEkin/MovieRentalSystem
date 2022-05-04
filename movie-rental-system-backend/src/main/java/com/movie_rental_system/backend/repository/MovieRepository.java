@@ -10,4 +10,7 @@ public interface MovieRepository extends JpaRepository<Movie, Integer>{
 
     @Query(value = "SELECT * FROM movie", nativeQuery = true)
     List<Movie> getAll();
+
+    @Query(value = "SELECT * FROM movie WHERE employee_name = ?1", nativeQuery = true)
+    List<Movie> findByEmployeeName(String name);
 }

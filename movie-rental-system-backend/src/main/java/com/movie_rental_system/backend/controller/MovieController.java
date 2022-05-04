@@ -1,5 +1,6 @@
 package com.movie_rental_system.backend.controller;
 
+import com.movie_rental_system.backend.dto.MovieDTO;
 import com.movie_rental_system.backend.entity.Customer;
 import com.movie_rental_system.backend.entity.Movie;
 import com.movie_rental_system.backend.entity.User;
@@ -34,7 +35,7 @@ public class MovieController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addMovie(@RequestBody Movie movie){
+    public ResponseEntity<?> addMovie(@RequestBody MovieDTO movie){
         return ResponseEntity.ok(movieService.addNewMovie(movie));
     }
 
