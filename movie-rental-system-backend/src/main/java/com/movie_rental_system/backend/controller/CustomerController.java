@@ -1,5 +1,6 @@
 package com.movie_rental_system.backend.controller;
 
+import com.movie_rental_system.backend.dto.FriendDTO;
 import com.movie_rental_system.backend.entity.*;
 import com.movie_rental_system.backend.service.CardService;
 import com.movie_rental_system.backend.service.CustomerService;
@@ -91,27 +92,27 @@ public class CustomerController {
     // -----------------friend endpoints------------------
     // get all friends of a customer
     @GetMapping("/{customer_name}/friends")
-    public ResponseEntity<List<Friend>> getFriends(@PathVariable String customer_name) {
+    public ResponseEntity<List<FriendDTO>> getFriends(@PathVariable String customer_name) {
         return ResponseEntity.ok(friendService.getFriendsOfCustomer(customer_name));
     }
 
     // get specific friend of a customer
     @GetMapping("/{customer_name}/friends/{friend_name}")
-    public ResponseEntity<Friend> getFriend(@PathVariable String customer_name, @PathVariable String friend_name) {
+    public ResponseEntity<FriendDTO> getFriend(@PathVariable String customer_name, @PathVariable String friend_name) {
         return ResponseEntity.ok(friendService.getFriend(customer_name, friend_name));
     }
 
     // delete friend of a customer
     @DeleteMapping("/{customer_name}/friends/{friend_name}")
-    public ResponseEntity<Friend> deleteFriend(@PathVariable String customer_name, @PathVariable String friend_name) {
+    public ResponseEntity<FriendDTO> deleteFriend(@PathVariable String customer_name, @PathVariable String friend_name) {
         return ResponseEntity.ok(friendService.deleteFriend(customer_name, friend_name));
     }
 
     // update friend of a customer
     // example request body: same as create friend in friend controller
     @PutMapping("/{customer_name}/friends/{friend_name}")
-    public ResponseEntity<Friend> updateFriend(@PathVariable String customer_name, @PathVariable String friend_name, @RequestBody Map<String, String> json) {
-        return ResponseEntity.ok(friendService.updateFriend(customer_name, friend_name, json));
+    public ResponseEntity<FriendDTO> updateFriend(@PathVariable String customer_name, @PathVariable String friend_name, @RequestBody FriendDTO friendDTO) {
+        return ResponseEntity.ok(friendService.updateFriend(customer_name, friend_name, friendDTO));
     }
 
 

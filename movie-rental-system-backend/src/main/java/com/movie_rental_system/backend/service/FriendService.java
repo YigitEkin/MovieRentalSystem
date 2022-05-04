@@ -1,21 +1,18 @@
 package com.movie_rental_system.backend.service;
 
+import com.movie_rental_system.backend.dto.FriendDTO;
 import com.movie_rental_system.backend.entity.Customer;
 import com.movie_rental_system.backend.entity.Friend;
-import com.movie_rental_system.backend.exception.CustomerNotFoundException;
-import com.movie_rental_system.backend.exception.FriendNotFoundException;
-import com.movie_rental_system.backend.exception.InvalidDateFormatException;
-import com.movie_rental_system.backend.exception.InvalidFriendRequestException;
+import com.movie_rental_system.backend.exception.*;
 import com.movie_rental_system.backend.repository.CustomerRepository;
 import com.movie_rental_system.backend.repository.FriendRepository;
+import com.movie_rental_system.backend.util.FriendKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Map;
-import java.util.zip.DataFormatException;
 
 @Service
 public class FriendService {
@@ -29,11 +26,11 @@ public class FriendService {
     }
 
     // get all friends
-    public List<Friend> getAllFriends() {
-        return friendRepository.findAll();
+    public List<FriendDTO> getAllFriends() {
+        return FriendDTO.toFriendDTOList(friendRepository.findAll());
     }
 
-    public Friend getFriend(String customer_name, String friend_name) {
+    public FriendDTO getFriend(String customer_name, String friend_name) {
         if (!customerRepository.existsById(customer_name) )
             throw new CustomerNotFoundException("Customer with name " + customer_name + " not found");
         else if (!customerRepository.existsById(friend_name))
@@ -41,56 +38,58 @@ public class FriendService {
         Friend friend = friendRepository.findFriend(customer_name, friend_name);
         if (friend == null)
             throw new FriendNotFoundException("Friend between " + customer_name + " and " + friend_name + " not found");
-        return friend;
+        return new FriendDTO(friend);
     }
 
     // get friends of customer
-    public List<Friend> getFriendsOfCustomer(String customer_name) {
+    public List<FriendDTO> getFriendsOfCustomer(String customer_name) {
         if (!customerRepository.existsById(customer_name))
             throw new CustomerNotFoundException("Customer with name " + customer_name + " not found");
-        return friendRepository.findFriendsOfCustomer(customer_name);
+        return FriendDTO.toFriendDTOList(friendRepository.findFriendsOfCustomer(customer_name));
     }
 
     // add a friend
-    public Friend addFriend(Map<String, String> json) {
-        Customer customer1 = customerRepository.findById(json.get("customer_name")).orElse(null);
-        Customer customer2 = customerRepository.findById(json.get("friend_name")).orElse(null);
+    public FriendDTO addFriend(FriendDTO friendDTO) {
+        Customer customer1 = customerRepository.findById(friendDTO.getCustomer_name()).orElse(null);
+        Customer customer2 = customerRepository.findById(friendDTO.getFriend_name()).orElse(null);
 
         if (customer1 == null)
-            throw new CustomerNotFoundException("Customer with name " + json.get("customer_name") + " not found");
+            throw new CustomerNotFoundException("Customer with name " + friendDTO.getCustomer_name() + " not found");
         if (customer2 == null)
-            throw new CustomerNotFoundException("Customer with name " + json.get("friend_name") + " not found");
+            throw new CustomerNotFoundException("Customer with name " + friendDTO.getFriend_name() + " not found");
         if (customer1.getUser_name().equals(customer2.getUser_name()))
-            throw new InvalidFriendRequestException("Customer with name " + json.get("friend_name") + " is the same as customer with name " + json.get("customer_name"));
+            throw new InvalidFriendRequestException("Customer with name " + friendDTO.getCustomer_name() + " is the same as customer with name " + friendDTO.getFriend_name());
+        if(friendRepository.findFriend( friendDTO.getCustomer_name(), friendDTO.getFriend_name()) != null)
+            throw new FriendAlreadyExistsException("Friend between " + friendDTO.getCustomer_name() + " and " + friendDTO.getFriend_name() + " already exists");
 
         try {
-            Friend friend = new Friend(customer1, customer2, new SimpleDateFormat("yyyy-MM-dd").parse(json.get("friend_request_date")));
-            return friendRepository.save(friend);
+            Friend friend = new Friend(customer1, customer2, new SimpleDateFormat("yyyy-MM-dd").parse(friendDTO.getFriend_request_date()));
+            return new FriendDTO(friendRepository.save(friend));
         } catch (ParseException e) {
-            throw new InvalidDateFormatException("Invalid date format: " + json.get("friend_request_date") + " should be yyyy-MM-dd");
+            throw new InvalidDateFormatException("Invalid date format: " + friendDTO.getFriend_request_date() + " should be yyyy-MM-dd");
         }
     }
 
     // delete a friend
-    public Friend deleteFriend(String customer_name, String friend_name) {
+    public FriendDTO deleteFriend(String customer_name, String friend_name) {
         Friend friend = friendRepository.findFriend(friend_name, customer_name);
         if(friend == null)
             throw new FriendNotFoundException("Friend between " + customer_name + " and " + friend_name + " not found");
         friendRepository.deleteFriend(customer_name, friend_name);
-        return friend;
+        return new FriendDTO(friend);
     }
 
     // update a friend
-    public Friend updateFriend(String customer_name, String friend_name, Map<String, String> json) {
+    public FriendDTO updateFriend(String customer_name, String friend_name, FriendDTO friendDTO) {
         Friend friend = friendRepository.findFriend(friend_name, customer_name);
         if (friend == null)
             throw new FriendNotFoundException("Friend between " + customer_name + " and " + friend_name + " not found");
 
         try {
-            friend.setFriend_request_date(new SimpleDateFormat("yyyy-MM-dd").parse(json.get("friend_request_date")));
-            return friendRepository.save(friend);
+            friend.setFriend_request_date(new SimpleDateFormat("yyyy-MM-dd").parse(friendDTO.getFriend_request_date()));
+            return new FriendDTO(friendRepository.save(friend));
         } catch (ParseException e) {
-            throw new InvalidDateFormatException("Invalid date format: " + json.get("friend_request_date") + " should be yyyy-MM-dd");
+            throw new InvalidDateFormatException("Invalid date format: " + friendDTO.getFriend_request_date() + " should be yyyy-MM-dd");
         }
     }
 }
