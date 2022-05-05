@@ -42,7 +42,9 @@ function AddMovie() {
   }
 
   function handleAddMovie(title) {
-    const newRequests = requests.filter((request) => request.title !== title);
+    const newRequests = requests.filter(
+      (request) => request.title.toLowerCase() !== title.toLowerCase()
+    );
     setRequests(newRequests);
 
     //TODO: implement add movie to database
