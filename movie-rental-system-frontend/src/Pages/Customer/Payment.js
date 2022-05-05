@@ -1,7 +1,6 @@
 import React from "react";
-import "../stylesheets/Payment.css";
+import "../../stylesheets/Payment.css";
 import Navbar from "../Components/Navbar";
-import MovieCard from "../Components/MovieCard";
 
 function Payment() {
   return (

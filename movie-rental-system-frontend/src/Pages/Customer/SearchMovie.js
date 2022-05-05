@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import "../stylesheets/SearchMovie.css";
-import Navbar from "../Components/Navbar";
-import SignUp from "./Signup";
-import MovieCard from "../Components/MovieCard";
-import Logo from "../images/gora.jpeg";
+import "../../stylesheets/SearchMovie.css";
+import Navbar from "../../Components/NavbarCustomer";
+import Logo from "../../images/gora.jpeg";
+import MovieCard from "../../Components/MovieCard";
 
 const SearchMovie = () => {
   const [filter, setFilter] = useState("");
