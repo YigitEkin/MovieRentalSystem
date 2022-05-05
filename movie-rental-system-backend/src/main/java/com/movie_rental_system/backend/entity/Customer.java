@@ -35,13 +35,13 @@ public class Customer extends User {
         this.balance = balance;
     }
 
-    public Customer(String user_name, String password, String email, Date birthday, Integer balance, List<Friend> friends, List<Card> cards) {
+    public Customer(String user_name, String password, String email, Date birthday, Integer balance, List<Friend> friends, List<Card> cards, List<MovieRequest> requests) {
         super(user_name, password, email, birthday);
         this.balance = balance;
         this.friends = friends;
         this.cards = cards;
+        this.requests = requests;
     }
-
 
 
     @Override

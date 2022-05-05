@@ -1,5 +1,6 @@
 package com.movie_rental_system.backend.controller;
 
+import com.movie_rental_system.backend.dto.CardDTO;
 import com.movie_rental_system.backend.dto.FriendDTO;
 import com.movie_rental_system.backend.entity.*;
 import com.movie_rental_system.backend.service.CardService;
@@ -119,14 +120,14 @@ public class CustomerController {
     // -----------------card endpoints------------------
     // get all cards of a customer
     @GetMapping("/{customer_name}/cards")
-    public ResponseEntity<List<Card>> getCards(@PathVariable String customer_name) {
-        return ResponseEntity.ok(cardService.getCardsOfCustomer(customer_name));
+    public ResponseEntity<List<CardDTO>> getCards(@PathVariable String customer_name) {
+        return ResponseEntity.ok(CardDTO.toCardDTOList(cardService.getCardsOfCustomer(customer_name)));
     }
 
     // get specific card of a customer
     @GetMapping("/{customer_name}/cards/{card_id}")
-    public ResponseEntity<Card> getCard(@PathVariable String customer_name, @PathVariable Long card_id) {
-        return ResponseEntity.ok(cardService.getCardOfCustomer(customer_name, card_id));
+    public ResponseEntity<CardDTO> getCard(@PathVariable String customer_name, @PathVariable Long card_id) {
+        return ResponseEntity.ok(new CardDTO(cardService.getCardOfCustomer(customer_name, card_id)));
     }
 
 

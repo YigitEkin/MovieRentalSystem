@@ -1,5 +1,6 @@
 package com.movie_rental_system.backend.service;
 
+import com.movie_rental_system.backend.dto.CardDTO;
 import com.movie_rental_system.backend.entity.Card;
 import com.movie_rental_system.backend.exception.CardNotFoundException;
 import com.movie_rental_system.backend.exception.CustomerNotFoundException;
@@ -57,29 +58,29 @@ public class CardService {
     }
 
     // create card
-    public Card createCard(Map<String, String> json) {
-        if(customerRepository.findById(json.get("customer_name")).orElse(null) == null)
-            throw new CustomerNotFoundException("Customer with name " + json.get("customer_name") + " not found");
+    public Card createCard(CardDTO cardDTO) {
+        if(customerRepository.findById(cardDTO.getCustomer_name()).orElse(null) == null)
+            throw new CustomerNotFoundException("Customer with name " + cardDTO.getCustomer_name() + " not found");
         return cardRepository.save(new Card(0L,
-                customerRepository.findById(json.get("customer_name")).orElse(null),
-                json.get("card_number"), json.get("exp_date"), json.get("cvv"), json.get("holder_name")));
+                customerRepository.findById(cardDTO.getCustomer_name()).orElse(null),
+                cardDTO.getCard_number(), cardDTO.getExp_date(),cardDTO.getCvv(), cardDTO.getHolder_name()));
     }
 
     // update card
-    public Card updateCard(Long card_id, Map<String, String> json) {
+    public Card updateCard(Long card_id, CardDTO cardDTO) {
         Card temp = cardRepository.findById(card_id).orElse(null);
         if (temp == null)
             throw new CardNotFoundException("Card with id " + card_id + " not found");
 
-        temp.setCustomer(customerRepository.findById(json.get("customer_name")).orElse(null));
+        temp.setCustomer(customerRepository.findById(cardDTO.getCustomer_name()).orElse(null));
         if(temp.getCustomer() == null)
-            throw new CustomerNotFoundException("Customer with name " + json.get("customer_name") + " not found");
+            throw new CustomerNotFoundException("Customer with name " + cardDTO.getCustomer_name() + " not found");
 
-        temp.setCard_number(json.get("card_number"));
-        temp.setCvv(json.get("cvv"));
-        temp.setExp_date(json.get("exp_date"));
-        temp.setCard_number(json.get("card_number"));
-        temp.setHolder_name(json.get("holder_name"));
+        temp.setCard_number(cardDTO.getCard_number());
+        temp.setExp_date(cardDTO.getExp_date());
+        temp.setCvv(cardDTO.getCvv());
+        temp.setHolder_name(cardDTO.getHolder_name());
+
         return cardRepository.save(temp);
     }
 
