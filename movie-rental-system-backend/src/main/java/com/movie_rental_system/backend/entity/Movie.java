@@ -1,6 +1,7 @@
 package com.movie_rental_system.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,6 +34,10 @@ public class Movie implements Serializable {
     @JoinColumn(name = "employee_name",nullable=false)
     @JsonIgnoreProperties({"password", "user_email", "birth_year", "salary"})
     private Employee employee;
+
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<MovieReview> movieReviews;
 
     private Date movie_register_date;
 

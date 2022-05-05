@@ -1,9 +1,11 @@
 package com.movie_rental_system.backend.controller;
 
 import com.movie_rental_system.backend.dto.MovieDTO;
+import com.movie_rental_system.backend.dto.MovieReviewDTO;
 import com.movie_rental_system.backend.entity.Customer;
 import com.movie_rental_system.backend.entity.Movie;
 import com.movie_rental_system.backend.entity.User;
+import com.movie_rental_system.backend.service.MovieReviewService;
 import com.movie_rental_system.backend.service.MovieService;
 import com.movie_rental_system.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +20,12 @@ import java.util.List;
 public class MovieController {
 
     private final MovieService movieService;
+    private final MovieReviewService movieReviewService;
 
     @Autowired
-    public MovieController(MovieService movieService){
+    public MovieController(MovieService movieService, MovieReviewService movieReviewService) {
         this.movieService = movieService;
+        this.movieReviewService = movieReviewService;
     }
 
     @GetMapping
@@ -39,9 +43,19 @@ public class MovieController {
         return ResponseEntity.ok(movieService.addNewMovie(movie));
     }
 
-    // delete customer
+    // delete movie
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMovie(@PathVariable Integer id) {
         return ResponseEntity.ok(movieService.deleteMovie(id));
     }
+
+    // --------------Movie Review Enpoints-----------------
+
+    // get movie reviews
+    @GetMapping("/{id}/reviews")
+    public ResponseEntity<List<MovieReviewDTO>> getMovieReviews(@PathVariable Integer id){
+        return ResponseEntity.ok(MovieReviewDTO.toMovieReviewDTOList(movieReviewService.getMovieReviewsByMovieId(id)));
+    }
+
+
 }

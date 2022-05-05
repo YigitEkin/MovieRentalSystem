@@ -30,6 +30,10 @@ public class Customer extends User {
     @JsonIgnore
     private List<MovieRequest> requests;
 
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<MovieReview> movieReviews;
+
     public Customer(String user_name, String password, String email, Date birthday, Integer balance) {
         super(user_name, password, email, birthday);
         this.balance = balance;

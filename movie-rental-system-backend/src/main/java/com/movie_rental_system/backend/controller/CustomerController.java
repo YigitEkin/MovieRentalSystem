@@ -2,11 +2,9 @@ package com.movie_rental_system.backend.controller;
 
 import com.movie_rental_system.backend.dto.CardDTO;
 import com.movie_rental_system.backend.dto.FriendDTO;
+import com.movie_rental_system.backend.dto.MovieReviewDTO;
 import com.movie_rental_system.backend.entity.*;
-import com.movie_rental_system.backend.service.CardService;
-import com.movie_rental_system.backend.service.CustomerService;
-import com.movie_rental_system.backend.service.FriendService;
-import com.movie_rental_system.backend.service.MovieRequestService;
+import com.movie_rental_system.backend.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,14 +19,18 @@ public class CustomerController {
     private final FriendService friendService;
     private final CardService cardService;
     private final MovieRequestService movieRequestService;
+    private final MovieReviewService movieReviewService;
 
     @Autowired
-    public CustomerController(CustomerService customerService, FriendService friendService, CardService cardService, MovieRequestService movieRequestService) {
+    public CustomerController(CustomerService customerService, FriendService friendService, CardService cardService, MovieRequestService movieRequestService, MovieReviewService movieReviewService) {
         this.customerService = customerService;
         this.friendService = friendService;
         this.cardService = cardService;
         this.movieRequestService = movieRequestService;
+        this.movieReviewService = movieReviewService;
     }
+
+
 
     // -----------------customer endpoints------------------
     // get all customers
@@ -139,4 +141,10 @@ public class CustomerController {
     }
 
 
+    // -----------------movie review endpoints------------------
+    // get all movie reviews of a customer
+    @GetMapping("/{customer_name}/movie_reviews")
+    public ResponseEntity<List<MovieReviewDTO>> getMovieReviews(@PathVariable String customer_name) {
+        return ResponseEntity.ok(MovieReviewDTO.toMovieReviewDTOList(movieReviewService.getMovieReviewsByCustomerName(customer_name)));
+    }
 }

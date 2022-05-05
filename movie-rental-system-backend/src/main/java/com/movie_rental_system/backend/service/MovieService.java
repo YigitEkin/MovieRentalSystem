@@ -1,12 +1,9 @@
 package com.movie_rental_system.backend.service;
 
 import com.movie_rental_system.backend.dto.MovieDTO;
-import com.movie_rental_system.backend.entity.Card;
-import com.movie_rental_system.backend.entity.Employee;
 import com.movie_rental_system.backend.entity.Movie;
-import com.movie_rental_system.backend.entity.User;
 import com.movie_rental_system.backend.repository.MovieRepository;
-import com.movie_rental_system.backend.repository.UserRepository;
+import com.movie_rental_system.backend.repository.MovieReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,19 +15,33 @@ import java.util.Objects;
 public class MovieService {
     private final MovieRepository movieRepository;
     private final EmployeeService employeeService;
+    private final MovieReviewRepository movieReviewRepository;
 
     @Autowired
-    public MovieService(MovieRepository repo, EmployeeService employeeService){
-        this.movieRepository = repo;
+    public MovieService(MovieRepository movieRepository, EmployeeService employeeService, MovieReviewRepository movieReviewRepository) {
+        this.movieRepository = movieRepository;
         this.employeeService = employeeService;
+        this.movieReviewRepository = movieReviewRepository;
     }
 
+
     public List<Movie> getAll(){
-        return movieRepository.getAll();
+        // set the average rating for each movie
+        List<Movie> movies = movieRepository.findAll();
+        for(Movie movie : movies){
+            Double averageRating = movieReviewRepository.getAverageRating(movie.getMovie_id());
+            if(averageRating != null)
+                movie.setAvg_rating(averageRating);
+        }
+        return movies;
     }
 
     public Movie findByMovieId(Integer id){
-        return movieRepository.findById(id).get();
+        Double averageRating = movieReviewRepository.getAverageRating(id);
+        Movie movie = movieRepository.findById(id).orElse(null);
+        if(averageRating != null && movie != null)
+            movie.setAvg_rating(averageRating);
+        return movie;
     }
 
     public Movie addNewMovie(MovieDTO movieDTO) {
@@ -45,6 +56,12 @@ public class MovieService {
     }
 
     public List<Movie> getEmployeeRegisteredMovies(String employee_name){
-        return movieRepository.findByEmployeeName(employee_name);
+        List<Movie> movies = movieRepository.findByEmployeeName(employee_name);
+        for(Movie movie : movieRepository.findByEmployeeName(employee_name)){
+            Double averageRating = movieReviewRepository.getAverageRating(movie.getMovie_id());
+            if(averageRating != null)
+                movie.setAvg_rating(averageRating);
+        }
+        return movies;
     }
 }
