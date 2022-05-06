@@ -7,10 +7,10 @@
   color: white;
 }
 
-.box-shadow {
-  box-shadow: 0px 0px 98px 63px rgba(255, 0, 0, 0.75);
-  -webkit-box-shadow: 0px 0px 98px 63px rgba(255, 0, 0, 0.75);
-  -moz-box-shadow: 0px 0px 98px 63px rgba(255, 0, 0, 0.75);
+.box-shadow-card {
+  box-shadow: 0px 0px 0px 20px rgba(255, 0, 0, 0.75);
+  -webkit-box-shadow: 0px 0px 0px 20px rgba(255, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 0px 20px rgba(255, 0, 0, 0.75);
 }
 
 .img {

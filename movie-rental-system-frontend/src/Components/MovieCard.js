@@ -1,4 +1,5 @@
 import React from "react";
+import ActorsModal from "./ActorsModal";
 import "../stylesheets/MovieCard.css";
 
 const MovieCard = ({
@@ -10,8 +11,10 @@ const MovieCard = ({
   director,
   genre,
   price,
+  actors,
+  id,
 }) => (
-  <div className="card box-shadow m-auto">
+  <div className="card box-shadow-card mx-auto my-5">
     <img src={img_url} className="card-img-top img" alt="..." />
     <div className="card-body">
       <div className="row">
@@ -24,9 +27,21 @@ const MovieCard = ({
       </div>
       <p className="card-text">{description}</p>
       <h5 className="card-title col-12 text-right">{`Year:  ${year}`}</h5>
-      <button href="#" className="btn btn-red d-block ml-auto">
-        {price}
-      </button>
+      <div className="row">
+        <div className="col-4">
+          <ActorsModal actors={actors} id={id} />
+        </div>
+        <div className="col-4">
+          <button href="#" className="btn btn-warning btn-block">
+            Reviews
+          </button>
+        </div>
+        <div className="col-4">
+          <button href="#" className="btn btn-red btn-block">
+            {price + " TL"}
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 );

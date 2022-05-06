@@ -1,6 +1,5 @@
 import React from "react";
 import "../stylesheets/MovieCard.css";
-import ActorsModal from "./ActorsModal";
 
 const MovieRequestCard = ({ title, description, year, user }) => (
   <section className="mb-3">

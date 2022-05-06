@@ -4,7 +4,6 @@ import MovieRequestCard from "../../Components/MovieRequestCard";
 import Addmoviemodal from "../../Components/AddMovieModal";
 import axios from "axios";
 
-const actors = ["actor", "actor1", "actor1", "actor1"];
 function AddMovie() {
   const [requests, setRequests] = useState([
     {

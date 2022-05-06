@@ -6,13 +6,13 @@ const Addmoviemodal = ({ sendAcceptRequest, handleAddMovie }) => {
       <button
         className="btn btn-block btn-red btn-lg mb-5"
         data-toggle="modal"
-        data-target="#exampleModal"
+        data-target="#addMovieModal"
       >
         Add Movie
       </button>
       <div
         className="modal fade"
-        id="exampleModal"
+        id="addMovieModal"
         tabIndex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
