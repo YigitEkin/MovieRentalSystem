@@ -13,6 +13,7 @@ const SignUp = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
+    //year should be casted to number
     //axios.get("http://localhost:8081/Signup", user).then().then();
   }
 
