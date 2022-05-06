@@ -1,6 +1,7 @@
 import React from "react";
 import ActorsModal from "./ActorsModal";
 import "../stylesheets/MovieCard.css";
+import Reviewsmodal from "./ReviewsModal";
 
 const MovieCard = ({
   img_url,
@@ -32,9 +33,7 @@ const MovieCard = ({
           <ActorsModal actors={actors} id={id} />
         </div>
         <div className="col-4">
-          <button href="#" className="btn btn-warning btn-block">
-            Reviews
-          </button>
+          <Reviewsmodal id={id} title={title} />
         </div>
         <div className="col-4">
           <button href="#" className="btn btn-red btn-block">
