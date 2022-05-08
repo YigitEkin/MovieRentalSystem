@@ -1,15 +1,11 @@
 package com.movie_rental_system.backend.service;
 
 import com.movie_rental_system.backend.entity.Customer;
+import com.movie_rental_system.backend.entity.Movie;
 import com.movie_rental_system.backend.entity.NewCustomer;
 import com.movie_rental_system.backend.entity.RepeatCustomer;
-import com.movie_rental_system.backend.exception.CustomerNotFoundException;
-import com.movie_rental_system.backend.exception.InvalidDateFormatException;
-import com.movie_rental_system.backend.exception.UserAlreadyExistsException;
-import com.movie_rental_system.backend.repository.CustomerRepository;
-import com.movie_rental_system.backend.repository.NewCustomerRepository;
-import com.movie_rental_system.backend.repository.RepeatCustomerRepository;
-import com.movie_rental_system.backend.repository.UserRepository;
+import com.movie_rental_system.backend.exception.*;
+import com.movie_rental_system.backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
@@ -23,15 +19,16 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private final NewCustomerRepository newCustomerRepository;
     private final RepeatCustomerRepository repeatCustomerRepository;
+    private final MovieRepository movieRepository;
 
     @Autowired
-    public CustomerService(UserRepository userRepository, CustomerRepository customerRepository, NewCustomerRepository newCustomerRepository, RepeatCustomerRepository repeatCustomerRepository) {
+    public CustomerService(UserRepository userRepository, CustomerRepository customerRepository, NewCustomerRepository newCustomerRepository, RepeatCustomerRepository repeatCustomerRepository, MovieRepository movieRepository) {
         this.userRepository = userRepository;
         this.customerRepository = customerRepository;
         this.newCustomerRepository = newCustomerRepository;
         this.repeatCustomerRepository = repeatCustomerRepository;
+        this.movieRepository = movieRepository;
     }
-
 
     // adds a new customer to the database (all customers are new customers by default)
     public Customer createCustomer(NewCustomer newCustomer) {
@@ -63,6 +60,8 @@ public class CustomerService {
         Customer customer = customerRepository.findById(user_name).orElse(null);
         if (customer == null)
             throw new CustomerNotFoundException("Customer with name " + user_name + " not found");
+        // remove favorite movies
+        customer.getFavorites().clear();
         userRepository.deleteById(user_name);
         return customer;
     }
@@ -89,4 +88,43 @@ public class CustomerService {
     public List<Customer> findAllCustomers() {
         return customerRepository.findAll();
     }
+
+    // ---------------------Favorite Movie Methods---------------------
+
+    // get favorite movies of customer
+    public List<Movie> getFavoriteMovies(String customer_name) {
+        Customer customer = customerRepository.findById(customer_name).orElse(null);
+        if (customer == null)
+            throw new CustomerNotFoundException("Customer with name " + customer_name + " not found");
+        return customer.getFavorites();
+    }
+
+    // add favorite movie to customer
+    public Movie addFavoriteMovie(String customer_name, Integer movie_id) {
+        Customer customer = customerRepository.findById(customer_name).orElse(null);
+        if (customer == null)
+            throw new CustomerNotFoundException("Customer with name " + customer_name + " not found");
+        Movie movie = movieRepository.findById(movie_id).orElse(null);
+        if (movie == null)
+            throw new MovieNotFoundException("Movie with id " + movie_id + " not found");
+        if(customer.getFavorites().contains(movie))
+            throw new FavoriteAlreadyExistsException("Movie with id " + movie_id + " already exists in customer's favorites");
+        customer.getFavorites().add(movie);
+        customerRepository.save(customer);
+        return movie;
+    }
+
+    // remove favorite movie from customer
+    public Movie removeFavoriteMovie(String customer_name, Integer movie_id) {
+        Customer customer = customerRepository.findById(customer_name).orElse(null);
+        if (customer == null)
+            throw new CustomerNotFoundException("Customer with name " + customer_name + " not found");
+        Movie movie = movieRepository.findById(movie_id).orElse(null);
+        if (movie == null)
+            throw new MovieNotFoundException("Movie with id " + movie_id + " not found");
+        customer.getFavorites().remove(movie);
+        customerRepository.save(customer);
+        return movie;
+    }
+
 }

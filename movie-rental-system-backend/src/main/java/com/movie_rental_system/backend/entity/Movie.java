@@ -39,6 +39,10 @@ public class Movie implements Serializable {
     @JsonIgnore
     private List<MovieReview> movieReviews;
 
+    @ManyToMany(mappedBy = "favorites", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JsonIgnore
+    private List<Customer> favoritedCustomers;
+
     private Date movie_register_date;
 
     public Movie(String movie_title, int production_year, String director, String genre, double price, Employee employee, Date time) {

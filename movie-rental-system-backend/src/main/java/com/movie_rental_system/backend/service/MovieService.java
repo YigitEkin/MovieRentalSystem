@@ -51,6 +51,9 @@ public class MovieService {
     }
 
     public String deleteMovie(Integer id) {
+        Movie movie = movieRepository.findById(id).orElse(null);
+        if(movie != null)
+            movie.getFavoritedCustomers().forEach(customer -> customer.getFavorites().remove(movie));
         movieRepository.deleteById(id);
         return "Movie is successfully deleted";
     }

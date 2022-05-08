@@ -147,4 +147,23 @@ public class CustomerController {
     public ResponseEntity<List<MovieReviewDTO>> getMovieReviews(@PathVariable String customer_name) {
         return ResponseEntity.ok(MovieReviewDTO.toMovieReviewDTOList(movieReviewService.getMovieReviewsByCustomerName(customer_name)));
     }
+
+    // -----------------movie favorite endpoints------------------
+    // get all movie favorites of a customer
+    @GetMapping("/{customer_name}/favorites")
+    public ResponseEntity<List<Movie>> getMovieFavorites(@PathVariable String customer_name) {
+        return ResponseEntity.ok(customerService.getFavoriteMovies(customer_name));
+    }
+
+    // create movie favorite of a customer
+    @PostMapping("/{customer_name}/favorites/{movie_id}")
+    public ResponseEntity<Movie> createMovieFavorite(@PathVariable String customer_name, @PathVariable Integer movie_id) {
+        return ResponseEntity.ok(customerService.addFavoriteMovie(customer_name, movie_id));
+    }
+
+    // delete movie favorite of a customer
+    @DeleteMapping("/{customer_name}/favorites/{movie_id}")
+    public ResponseEntity<Movie> deleteMovieFavorite(@PathVariable String customer_name, @PathVariable Integer movie_id) {
+        return ResponseEntity.ok(customerService.removeFavoriteMovie(customer_name, movie_id));
+    }
 }

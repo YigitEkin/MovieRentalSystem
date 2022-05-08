@@ -34,6 +34,14 @@ public class Customer extends User {
     @JsonIgnore
     private List<MovieReview> movieReviews;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "favorite",
+            joinColumns = @JoinColumn(name = "customer_name"),
+            inverseJoinColumns = @JoinColumn(name = "movie_id"))
+    @JsonIgnore
+    private List<Movie> favorites;
+
     public Customer(String user_name, String password, String email, Date birthday, Integer balance) {
         super(user_name, password, email, birthday);
         this.balance = balance;
