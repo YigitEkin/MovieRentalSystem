@@ -1,10 +1,7 @@
 package com.movie_rental_system.backend.service;
 
 import com.movie_rental_system.backend.dto.MovieDTO;
-import com.movie_rental_system.backend.entity.Customer;
-import com.movie_rental_system.backend.entity.Movie;
-import com.movie_rental_system.backend.entity.NewCustomer;
-import com.movie_rental_system.backend.entity.RepeatCustomer;
+import com.movie_rental_system.backend.entity.*;
 import com.movie_rental_system.backend.exception.CustomerNotFoundException;
 import com.movie_rental_system.backend.exception.InvalidDateFormatException;
 import com.movie_rental_system.backend.exception.MovieNotFoundException;
@@ -14,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class MovieService {
@@ -83,5 +77,18 @@ public class MovieService {
                 movie.setAvg_rating(averageRating);
         }
         return movies;
+    }
+
+    public List<Customer> getCustomerRents(Integer movie_id){
+        Movie movie = movieRepository.findById(movie_id).orElse(null);
+        if(movie == null)
+            throw new MovieNotFoundException("Movie with id " + movie_id + " is not found");
+        List<Rent> rents =  movie.getCustomerRents();
+        List<Customer> customers = new ArrayList<>();
+        for(Rent rent : rents) {
+            customers.add(rent.getCustomer());
+        }
+        return customers;
+
     }
 }

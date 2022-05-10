@@ -62,5 +62,12 @@ public class MovieController {
         return ResponseEntity.ok(MovieReviewDTO.toMovieReviewDTOList(movieReviewService.getMovieReviewsByMovieId(id)));
     }
 
+    // -----------------rent movie endpoints------------------
+    // get all rented movies of a customer
+    @GetMapping("/{movie_id}/rents")
+    public ResponseEntity<List<Customer>> getRentedMovies(@PathVariable Integer movie_id) {
+        return ResponseEntity.ok(movieService.getCustomerRents(movie_id));
+    }
+
 
 }

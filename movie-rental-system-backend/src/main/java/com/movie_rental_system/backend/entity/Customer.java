@@ -6,6 +6,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +18,7 @@ import java.util.List;
 @PrimaryKeyJoinColumn(name = "customer_name")
 @NoArgsConstructor
 public class Customer extends User {
-    private Integer balance;
+    private double balance;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     @JsonIgnore
@@ -34,6 +36,10 @@ public class Customer extends User {
     @JsonIgnore
     private List<MovieReview> movieReviews;
 
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Rent> rentedMovies;
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "favorite",
@@ -42,12 +48,12 @@ public class Customer extends User {
     @JsonIgnore
     private List<Movie> favorites;
 
-    public Customer(String user_name, String password, String email, Date birthday, Integer balance) {
+    public Customer(String user_name, String password, String email, Date birthday, double balance) {
         super(user_name, password, email, birthday);
         this.balance = balance;
     }
 
-    public Customer(String user_name, String password, String email, Date birthday, Integer balance, List<Friend> friends, List<Card> cards, List<MovieRequest> requests) {
+    public Customer(String user_name, String password, String email, Date birthday, double balance, List<Friend> friends, List<Card> cards, List<MovieRequest> requests) {
         super(user_name, password, email, birthday);
         this.balance = balance;
         this.friends = friends;
@@ -59,6 +65,29 @@ public class Customer extends User {
     @Override
     public String toString() {
         return super.toString() + " " + this.balance;
+    }
+
+    // returns the rented movies as a list of movies, not as a list of rents
+    @JsonIgnore
+    public List<Movie> getRentedMoviesM(){
+        List<Movie> movies = new ArrayList<>();
+        for (Rent rent : this.rentedMovies) {
+            movies.add(rent.getMovie());
+        }
+        return movies;
+    }
+
+    public boolean checkExpiry(Integer movie_id){
+        for (Rent rent : this.rentedMovies) {
+            if (rent.getMovie().getMovie_id() == movie_id) {
+                Calendar lastMonth = Calendar.getInstance();
+                lastMonth.add(Calendar.MONTH, -1);
+                if(lastMonth.getTime().after(rent.getRent_date())){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
 

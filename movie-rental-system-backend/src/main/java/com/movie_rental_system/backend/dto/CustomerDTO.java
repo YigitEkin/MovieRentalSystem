@@ -14,7 +14,7 @@ public class CustomerDTO {
     private String password;
     private String user_email;
     private String birth_year;
-    private Integer balance;
+    private double balance;
     private String promotion_code;
     private String customer_rank;
     private String discount_code;

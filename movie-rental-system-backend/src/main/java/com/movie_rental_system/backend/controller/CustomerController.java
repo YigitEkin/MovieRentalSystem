@@ -166,4 +166,18 @@ public class CustomerController {
     public ResponseEntity<Movie> deleteMovieFavorite(@PathVariable String customer_name, @PathVariable Integer movie_id) {
         return ResponseEntity.ok(customerService.removeFavoriteMovie(customer_name, movie_id));
     }
+    // -----------------rent movie endpoints------------------
+    // get all rented movies of a customer
+    @GetMapping("/{customer_name}/rents")
+    public ResponseEntity<List<Movie>> getRentedMovies(@PathVariable String customer_name) {
+        return ResponseEntity.ok(customerService.getRentedMovies(customer_name));
+    }
+
+    // rent a movie
+    @PostMapping("/{customer_name}/rents/{movie_id}")
+    public ResponseEntity<Movie> rentMovie(@PathVariable String customer_name, @PathVariable Integer movie_id) {
+        return ResponseEntity.ok(customerService.rentMovie(customer_name, movie_id));
+    }
+
+    // unrent a movie ???
 }

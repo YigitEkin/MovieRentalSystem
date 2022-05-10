@@ -1,15 +1,13 @@
 package com.movie_rental_system.backend.service;
 
-import com.movie_rental_system.backend.entity.Customer;
-import com.movie_rental_system.backend.entity.Movie;
-import com.movie_rental_system.backend.entity.NewCustomer;
-import com.movie_rental_system.backend.entity.RepeatCustomer;
+import com.movie_rental_system.backend.entity.*;
 import com.movie_rental_system.backend.exception.*;
 import com.movie_rental_system.backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -127,4 +125,32 @@ public class CustomerService {
         return movie;
     }
 
+    public List<Movie> getRentedMovies(String customer_name) {
+        Customer customer = customerRepository.findById(customer_name).orElse(null);
+        if (customer == null)
+            throw new CustomerNotFoundException("Customer with name " + customer_name + " not found");
+        return customer.getRentedMoviesM();
+    }
+
+    public Movie rentMovie(String customer_name, Integer movie_id) {
+        Customer customer = customerRepository.findById(customer_name).orElse(null);
+        if (customer == null)
+            throw new CustomerNotFoundException("Customer with name " + customer_name + " not found");
+        Movie movie = movieRepository.findById(movie_id).orElse(null);
+        if (movie == null)
+            throw new MovieNotFoundException("Movie with id " + movie_id + " not found");
+        if(customer.getRentedMoviesM().contains(movie)){
+            // is the rent expired?
+            if (customer.checkExpiry(movie_id)) {
+                customer.getRentedMoviesM().remove(movie);
+                customerRepository.save(customer);
+            }else
+                // if the rent date is older than 1 month, the movie is considered as overdue and it is returned
+            throw new AlreadyRentedException("Movie with id " + movie_id + " already exists in customer's rented movies");
+        }
+        customer.getRentedMovies().add(new Rent(customer, movie));
+        customer.setBalance((customer.getBalance() - movie.getPrice()));
+        customerRepository.save(customer);
+        return movie;
+    }
 }
