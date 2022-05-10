@@ -49,7 +49,6 @@ public class Movie implements Serializable {
         this.movie_title = movie_title;
         this.production_year = production_year;
         this.director = director;
-        //this.avg_rating = avg_rating;
         this.genre = genre;
         this.price = price;
         this.employee = employee;

@@ -43,13 +43,18 @@ public class MovieController {
         return ResponseEntity.ok(movieService.addNewMovie(movie));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateMovie(@PathVariable Integer id, @RequestBody  MovieDTO movie){
+        return ResponseEntity.ok(movieService.updateMovie(id, movie));
+    }
+
     // delete movie
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMovie(@PathVariable Integer id) {
         return ResponseEntity.ok(movieService.deleteMovie(id));
     }
 
-    // --------------Movie Review Enpoints-----------------
+    // --------------Movie Review Endpoints-----------------
 
     // get movie reviews
     @GetMapping("/{id}/reviews")

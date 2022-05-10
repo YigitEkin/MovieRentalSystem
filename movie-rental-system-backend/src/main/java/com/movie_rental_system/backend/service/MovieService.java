@@ -1,14 +1,22 @@
 package com.movie_rental_system.backend.service;
 
 import com.movie_rental_system.backend.dto.MovieDTO;
+import com.movie_rental_system.backend.entity.Customer;
 import com.movie_rental_system.backend.entity.Movie;
+import com.movie_rental_system.backend.entity.NewCustomer;
+import com.movie_rental_system.backend.entity.RepeatCustomer;
+import com.movie_rental_system.backend.exception.CustomerNotFoundException;
+import com.movie_rental_system.backend.exception.InvalidDateFormatException;
+import com.movie_rental_system.backend.exception.MovieNotFoundException;
 import com.movie_rental_system.backend.repository.MovieRepository;
 import com.movie_rental_system.backend.repository.MovieReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Service
@@ -48,6 +56,15 @@ public class MovieService {
         Objects.requireNonNull(movieDTO, "movie cannot be null");
         Movie movie1 = new Movie(movieDTO.getMovie_title(),movieDTO.getProduction_year() ,movieDTO.getDirector(),movieDTO.getGenre(),movieDTO.getPrice(), employeeService.getEmployeeByName(movieDTO.getEmployee_name()), Calendar.getInstance().getTime());
         return movieRepository.save(movie1);
+    }
+
+    // update movie
+    public Movie updateMovie(Integer id, MovieDTO movieDTO) {
+            if (movieRepository.existsById(id)) {
+                return movieRepository.save(new Movie(movieDTO.getMovie_title(),movieDTO.getProduction_year() ,movieDTO.getDirector(),movieDTO.getGenre(),movieDTO.getPrice(), employeeService.getEmployeeByName(movieDTO.getEmployee_name()), Calendar.getInstance().getTime()));
+            }else {
+                throw new MovieNotFoundException("Movie with id " + id + " is not found");
+            }
     }
 
     public String deleteMovie(Integer id) {
