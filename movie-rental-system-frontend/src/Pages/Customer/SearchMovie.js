@@ -66,7 +66,7 @@ const moviesTemp = [
   },
 ];
 
-const SearchMovie = () => {
+const SearchMovie = ({ name }) => {
   const [filter, setFilter] = useState("");
   const [price, setPrice] = useState(false);
   const [rating, setRating] = useState(false);
@@ -93,7 +93,7 @@ const SearchMovie = () => {
 
   return (
     <div className="allpage bg-black">
-      <Navbar name="ArdaTheJapon_07" />
+      <Navbar name={name} />
       <div className="mainContent container mt-5">
         <select
           ref={filterElement}
@@ -139,10 +139,11 @@ const SearchMovie = () => {
             <div className="form-check form-check-inline">
               <input
                 className="form-check-input"
-                type="checkbox"
+                type="radio"
                 id="inlineCheckbox2"
                 value="option2"
               />
+
               <label
                 className="form-check-label text-white text-lg"
                 htmlFor="inlineCheckbox2"
@@ -186,6 +187,7 @@ const SearchMovie = () => {
         </div>
         {movies.map((movie) => (
           <MovieCard
+            name={name}
             key={movie.id}
             img_url={movie.img_url}
             title={movie.title}

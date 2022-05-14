@@ -1,6 +1,6 @@
 import React from "react";
 import "../../stylesheets/Payment.css";
-import Navbar from "../Components/Navbar";
+import Navbar from "../../Components/NavbarCustomer";
 
 function Payment() {
   return (

@@ -7,9 +7,11 @@ const Reviewinfo = ({
   review_message,
   spoiler,
   net_like_count,
+  index,
 }) => {
   const [like_count, set_like_count] = useState(net_like_count);
   const [liked, set_liked] = useState(false);
+  const [isSpoilerClicked, set_isSpoilerClicked] = useState(false);
 
   const like = () => {
     if (liked) {
@@ -30,17 +32,16 @@ const Reviewinfo = ({
               <p className="d-inline col-8 ml-2">
                 {user}'s review from {date}
               </p>
-              <p className="col-3 ml-auto">
-                <a
-                  class="btn btn-red"
-                  data-toggle="collapse"
-                  href="#collapseExample"
+              <div className="col-3 ml-auto">
+                <div
+                  className="btn btn-red"
                   role="button"
                   aria-expanded="false"
                   aria-controls="collapseExample"
+                  onClick={() => set_isSpoilerClicked((prev) => !prev)}
                 >
                   SPOILER!!!
-                </a>
+                </div>
                 <button
                   className={`btn ml-2 border ${
                     liked ? "btn-warning" : "btn-light"
@@ -49,21 +50,24 @@ const Reviewinfo = ({
                 >
                   {like_count}
                 </button>
-              </p>
-            </div>
-            <div class="collapse" id="collapseExample">
-              <div
-                class="border p-2 bg-red mt-1 text-light"
-                style={{ backgroundColor: "red" }}
-              >
-                {review_message}
-                <div className="mt-1">
-                  <h1 style={{ fontSize: "1.4rem" }}>
-                    Rating: {rating + "/10"}
-                  </h1>
-                </div>
               </div>
             </div>
+            {console.log(isSpoilerClicked)}
+            {isSpoilerClicked ? (
+              <div id="collapseExample">
+                <div
+                  className="border p-2 bg-red mt-1 text-light"
+                  style={{ backgroundColor: "red" }}
+                >
+                  {review_message}
+                  <div className="mt-1">
+                    <h1 style={{ fontSize: "1.4rem" }}>
+                      Rating: {rating + "/10"}
+                    </h1>
+                  </div>
+                </div>
+              </div>
+            ) : null}
           </div>
         </>
       ) : (
@@ -84,8 +88,8 @@ const Reviewinfo = ({
                 </button>
               </p>
             </div>
-            <div class="" id="">
-              <div class="p-2 bg-red mt-1 text-dark">
+            <div className="" id="">
+              <div className="p-2 bg-red mt-1 text-dark">
                 {review_message}
                 <div className="mt-1">
                   <h1 style={{ fontSize: "1.4rem" }}>

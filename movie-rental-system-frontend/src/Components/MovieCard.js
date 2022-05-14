@@ -14,6 +14,7 @@ const MovieCard = ({
   price,
   actors,
   id,
+  name,
 }) => (
   <div className="card box-shadow-card mx-auto my-5">
     <img src={img_url} className="card-img-top img" alt="..." />
@@ -33,7 +34,7 @@ const MovieCard = ({
           <ActorsModal actors={actors} id={id} />
         </div>
         <div className="col-4">
-          <Reviewsmodal id={id} title={title} />
+          <Reviewsmodal id={id} title={title} name={name} />
         </div>
         <div className="col-4">
           <button href="#" className="btn btn-red btn-block">

@@ -2,19 +2,26 @@ import React, { useState, useEffect, useRef } from "react";
 import "../stylesheets/login.css";
 import Logo from "../images/logo.jpeg";
 import axios from "axios";
-import { useRouter } from "../Hooks/useRouter";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [user, setUser] = useState({ user_name: "", password: "" });
   const [isUsernameRemebered, setIsUsernameRemebered] = useState(false);
   const userNameInput = useRef(null);
   const checkbox = useRef(null);
-  const router = useRouter();
+  const navigate = useNavigate();
 
   function handleLogin(e) {
     e.preventDefault();
     //axios.get("http://localhost:8081/Login", user).then().then();
     //router.push("/")
+    if (user.user_name === "admin@admin.com" || user.password === 123456) {
+      navigate("/employee/mainPage");
+    } else {
+      navigate("/customer/mainPage");
+    }
+    //}
   }
 
   function handleInput(e) {
@@ -115,9 +122,9 @@ const Login = () => {
             </form>
             <div className="row mt-3">
               <div className="col-12 ml-2 p-2">
-                <a href="./Signup.js">
+                <Link to={"/signup"}>
                   <p className="text-red large-text">Don't have an account?</p>
-                </a>
+                </Link>
                 <a href="ForgotPassword.js">
                   <p className="text-red large-text">Forgot my Password</p>
                 </a>

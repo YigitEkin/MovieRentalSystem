@@ -32,7 +32,7 @@ function ActorsModal({ actors, id }) {
             </div>
             <div className="modal-body">
               {actors.map((item, index) => {
-                return <h1>{`${index + 1}) ${item}`}</h1>;
+                return <h1 key={index}>{`${index + 1}) ${item}`}</h1>;
               })}
             </div>
             <div className="modal-footer">

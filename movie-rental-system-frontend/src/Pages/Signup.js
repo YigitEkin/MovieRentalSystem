@@ -2,6 +2,7 @@ import { Axios } from "axios";
 import React, { useState } from "react";
 import "../stylesheets/signup.css";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
   const [user, setUser] = useState({
@@ -31,9 +32,9 @@ const SignUp = () => {
         className="box-shadow p-10 m- w-60 p-relative"
         onSubmit={handleSubmit}
       >
-        <a href="./Login.js" className="back-to-login btn">
+        <Link to={"/"} className="back-to-login btn">
           {"<-"}
-        </a>
+        </Link>
         <h1 className="display-4 text-red text-center mb-4">Sign Up</h1>
         <div className="form-group">
           <label htmlFor="exampleInputPassword1" className="text-gray">
