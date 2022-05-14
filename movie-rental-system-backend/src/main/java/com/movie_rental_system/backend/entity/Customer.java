@@ -77,6 +77,7 @@ public class Customer extends User {
         return movies;
     }
 
+    @JsonIgnore
     public boolean checkExpiry(Integer movie_id){
         for (Rent rent : this.rentedMovies) {
             if (rent.getMovie().getMovie_id() == movie_id) {

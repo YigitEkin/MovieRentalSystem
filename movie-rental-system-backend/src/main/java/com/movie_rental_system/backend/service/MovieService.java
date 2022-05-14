@@ -5,6 +5,7 @@ import com.movie_rental_system.backend.entity.*;
 import com.movie_rental_system.backend.exception.CustomerNotFoundException;
 import com.movie_rental_system.backend.exception.InvalidDateFormatException;
 import com.movie_rental_system.backend.exception.MovieNotFoundException;
+import com.movie_rental_system.backend.repository.DeletedMovieRepository;
 import com.movie_rental_system.backend.repository.MovieRepository;
 import com.movie_rental_system.backend.repository.MovieReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +17,17 @@ import java.util.*;
 @Service
 public class MovieService {
     private final MovieRepository movieRepository;
+    private final DeletedMovieRepository deletedMovieRepository;
     private final EmployeeService employeeService;
     private final MovieReviewRepository movieReviewRepository;
 
     @Autowired
-    public MovieService(MovieRepository movieRepository, EmployeeService employeeService, MovieReviewRepository movieReviewRepository) {
+    public MovieService(MovieRepository movieRepository, EmployeeService employeeService, MovieReviewRepository movieReviewRepository,
+                        DeletedMovieRepository deletedMovieRepository) {
         this.movieRepository = movieRepository;
         this.employeeService = employeeService;
         this.movieReviewRepository = movieReviewRepository;
+        this.deletedMovieRepository = deletedMovieRepository;
     }
 
 
@@ -63,10 +67,15 @@ public class MovieService {
 
     public String deleteMovie(Integer id) {
         Movie movie = movieRepository.findById(id).orElse(null);
-        if(movie != null)
+        if(movie != null){
             movie.getFavoritedCustomers().forEach(customer -> customer.getFavorites().remove(movie));
-        movieRepository.deleteById(id);
-        return "Movie is successfully deleted";
+            movieRepository.deleteById(id);
+            deletedMovieRepository.save(new DeletedMovie(movie.getMovie_id(),movie.getMovie_title() ,movie.getProduction_year(), movie.getDirector(), movie.getAvg_rating(), movie.getGenre(), movie.getPrice(), movie.getEmployee(),movie.getMovie_register_date(),employeeService.getEmployeeByName(movie.getEmployee().getUser_name()) ,Calendar.getInstance().getTime()));
+            return "Movie with id " + id + " is deleted";
+        }else{
+            throw new MovieNotFoundException("Movie with id " + id + " is not found");
+        }
+
     }
 
     public List<Movie> getEmployeeRegisteredMovies(String employee_name){
@@ -89,6 +98,13 @@ public class MovieService {
             customers.add(rent.getCustomer());
         }
         return customers;
+    }
 
+    public List<DeletedMovie> getAllDeletedMovies(){
+        return deletedMovieRepository.findAll();
+    }
+
+    public DeletedMovie findDeletedMovieById(Integer id){
+        return deletedMovieRepository.findById(id).orElse(null);
     }
 }
