@@ -61,7 +61,6 @@ const Addmovieform = ({ handleAddMovie }) => {
         image: image.current.value,
       };
       handleAddMovie(title.current.value);
-      console.log(movie);
       title.current.value = "";
       director.current.value = "";
       year.current.value = "";

@@ -1,11 +1,15 @@
 import React from "react";
 import "../../stylesheets/Payment.css";
 import Navbar from "../../Components/NavbarCustomer";
+import { useContext } from "react";
+import { Context } from "../../App";
 
 function Payment() {
+  const [state, dispatch] = useContext(Context);
+  console.log("cart", state.cart);
   return (
     <div className="allpage">
-      <Navbar name={"Ytekin12"} />
+      <Navbar name={state.user_name} />
       <div className="maincontent container mt-5">
         <div className="row">
           <div class="card col-12">

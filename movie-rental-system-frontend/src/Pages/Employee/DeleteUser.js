@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Navbar from "../../Components/NavbarEmployee";
+import { useContext } from "react";
+import { Context } from "../../App";
 
 const tempUsers = [
   {
@@ -20,7 +22,8 @@ const tempUsers = [
   },
 ];
 
-const Deleteuser = ({ name }) => {
+const Deleteuser = () => {
+  const [state, dispatch] = useContext(Context);
   const [users, setusers] = useState(tempUsers);
   const [filteredUsers, setfilteredUsers] = useState(users);
   const searchBar = useRef(null);
@@ -50,7 +53,7 @@ const Deleteuser = ({ name }) => {
 
   return (
     <>
-      <Navbar name={name} />
+      <Navbar name={state.user_name} />
       <div className="container">
         <label
           className="display-4 text-center text-light d-block"

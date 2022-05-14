@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import "../../stylesheets/SearchMovie.css";
 import Navbar from "../../Components/NavbarCustomer";
 import MovieCard from "../../Components/MovieCard";
+import { useContext } from "react";
+import { Context } from "../../App";
 
 const moviesTemp = [
   {
@@ -66,8 +68,8 @@ const moviesTemp = [
   },
 ];
 
-const SearchMovie = ({ name }) => {
-  console.log("mounted");
+const SearchMovie = () => {
+  const [state, dispatch] = useContext(Context);
   const [filter, setFilter] = useState("");
   const [price, setPrice] = useState(false);
   const [rating, setRating] = useState(false);
@@ -94,7 +96,7 @@ const SearchMovie = ({ name }) => {
 
   return (
     <div className="allpage bg-black">
-      <Navbar name={name} />
+      <Navbar name={state.user_name} />
       <div className="mainContent container mt-5">
         <select
           ref={filterElement}
@@ -188,7 +190,7 @@ const SearchMovie = ({ name }) => {
         </div>
         {movies.map((movie) => (
           <MovieCard
-            name={name}
+            name={state.user_name}
             key={movie.id}
             img_url={movie.img_url}
             title={movie.title}

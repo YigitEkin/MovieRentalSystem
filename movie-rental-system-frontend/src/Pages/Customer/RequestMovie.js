@@ -1,7 +1,10 @@
 import React, { useRef } from "react";
 import Navbar from "../../Components/NavbarCustomer";
+import { useContext } from "react";
+import { Context } from "../../App";
 
-const Requestmovie = ({ name }) => {
+const Requestmovie = () => {
+  const [state, dispatch] = useContext(Context);
   const titleRef = useRef(null);
   const descriptionRef = useRef(null);
   const yearRef = useRef(null);
@@ -19,7 +22,7 @@ const Requestmovie = ({ name }) => {
         title: titleRef.current.value,
         description: descriptionRef.current.value,
         year: +yearRef.current.value,
-        user: name,
+        user: state.user_name,
         //id: user.id,
       };
       //axios
@@ -27,7 +30,7 @@ const Requestmovie = ({ name }) => {
   }
   return (
     <>
-      <Navbar name={name} />
+      <Navbar name={state.user_name} />
       <div className="container">
         <div className="row">
           <div className="col-md-12 mt-3">

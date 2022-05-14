@@ -3,8 +3,11 @@ import Navbar from "../../Components/NavbarEmployee";
 import MovieRequestCard from "../../Components/MovieRequestCard";
 import Addmoviemodal from "../../Components/AddMovieModal";
 import axios from "axios";
+import { useContext } from "react";
+import { Context } from "../../App";
 
 function AddMovie() {
+  const [state, dispatch] = useContext(Context);
   const [requests, setRequests] = useState([
     {
       id: 1,
@@ -51,7 +54,7 @@ function AddMovie() {
   }
   return (
     <>
-      <Navbar name={"tempCustomer"} />
+      <Navbar name={state.user_name} />
       <div className="container mt-5">
         <h1 className="text-white display1 mb-5 text-center">
           <Addmoviemodal

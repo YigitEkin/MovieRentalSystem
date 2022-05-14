@@ -2,8 +2,11 @@ import React from "react";
 import Logo from "../images/logo.jpeg";
 import "../stylesheets/Navbar.css";
 import { useNavigate } from "react-router-dom";
+import { Context } from "../App";
+import { useContext } from "react";
 
 const Navbar = ({ name }) => {
+  const [state, dispatch] = useContext(Context);
   const navigate = useNavigate();
   return (
     <div className="container dark-bg">
@@ -57,6 +60,7 @@ const Navbar = ({ name }) => {
                 className="nav-link text-white"
                 onClick={() => {
                   navigate("/");
+                  dispatch({ type: "LOGOUT" });
                 }}
               >
                 Logout
@@ -64,7 +68,7 @@ const Navbar = ({ name }) => {
             </li>
           </ul>
           <li className="nav-item no-style">
-            <div className="nav-link text-white">{`Hi,  ${name}`}</div>
+            <div className="nav-link text-white">{`Hi,  ${state.user_name}`}</div>
           </li>
         </div>
       </nav>

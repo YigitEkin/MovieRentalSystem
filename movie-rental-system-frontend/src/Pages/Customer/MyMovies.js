@@ -3,6 +3,8 @@ import "../../stylesheets/SearchMovie.css";
 import Navbar from "../../Components/NavbarCustomer";
 import MovieCard from "../../Components/MovieCard";
 import RentedMovieCard from "../../Components/RentedMovieCard";
+import { useContext } from "react";
+import { Context } from "../../App";
 const favourites = [
   {
     id: 3,
@@ -69,10 +71,11 @@ const moviesTemp = [
   },
 ];
 
-const SearchMovie = ({ name }) => {
+const SearchMovie = () => {
+  const [state, dispatch] = useContext(Context);
   const clickedNav = { backgroundColor: "red", color: "white" };
   const unCLickedNav = { backgroundColor: "white", color: "red" };
-  const [isFavouritesShown, setFavouritesShown] = useState(false);
+  const [isFavouritesShown, setFavouritesShown] = useState(true);
   const [movies, setMovies] = useState(moviesTemp);
 
   useEffect(() => {
@@ -95,7 +98,7 @@ const SearchMovie = ({ name }) => {
 
   return (
     <div className="allpage bg-black">
-      <Navbar name={name} />
+      <Navbar name={state.user_name} />
       <div className="mainContent container mt-5">
         <nav class="nav nav-pills nav-justified">
           <div
@@ -126,7 +129,7 @@ const SearchMovie = ({ name }) => {
         ) : isFavouritesShown ? (
           movies.map((movie) => (
             <MovieCard
-              name={name}
+              name={state.user_name}
               key={movie.id}
               img_url={movie.img_url}
               title={movie.title}
@@ -143,7 +146,7 @@ const SearchMovie = ({ name }) => {
         ) : (
           movies.map((movie) => (
             <RentedMovieCard
-              name={name}
+              name={state.user_name}
               key={movie.id}
               img_url={movie.img_url}
               title={movie.title}

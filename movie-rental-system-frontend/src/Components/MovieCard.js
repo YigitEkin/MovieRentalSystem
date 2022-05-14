@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import ActorsModal from "./ActorsModal";
 import "../stylesheets/MovieCard.css";
 import Reviewsmodal from "./ReviewsModal";
+import { useContext } from "react";
+import { Context } from "../App";
 
 const MovieCard = ({
   img_url,
@@ -16,6 +18,7 @@ const MovieCard = ({
   id,
   name,
 }) => {
+  const [state, dispatch] = useContext(Context);
   const FavouriteStyle = {
     backgroundColor: "red",
     color: "white",
@@ -75,7 +78,15 @@ const MovieCard = ({
             <Reviewsmodal id={id} title={title} name={name} />
           </div>
           <div className="col-4">
-            <button href="#" className="btn btn-red btn-block">
+            <button
+              className="btn btn-red btn-block"
+              onClick={() => {
+                dispatch({
+                  type: "SET_CART",
+                  payload: { id: id, title: title, price: price },
+                });
+              }}
+            >
               {price + " TL"}
             </button>
           </div>

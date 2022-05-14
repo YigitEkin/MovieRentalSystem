@@ -4,8 +4,12 @@ import Logo from "../images/logo.jpeg";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { Context } from "../App";
 
 const Login = () => {
+  //usecontext is used to get the state and dispatch from the context provider
+  const [state, dispatch] = useContext(Context);
   const [user, setUser] = useState({ user_name: "", password: "" });
   const [isUsernameRemebered, setIsUsernameRemebered] = useState(false);
   const userNameInput = useRef(null);
@@ -17,11 +21,16 @@ const Login = () => {
     //axios.get("http://localhost:8081/Login", user).then().then();
     //router.push("/")
     navigate("/customer/mainPage");
+    dispatch({ type: "SET_USER_ID", payload: 1 });
+    dispatch({ type: "SET_USER_NAME", payload: user.user_name });
+    dispatch({ type: "SET_CART", payload: [] });
+
     if (user.user_name === "admin@admin.com" || user.password === 123456) {
+      dispatch({ type: "SET_USER_ID", payload: "admin" });
+      dispatch({ type: "SET_USER_NAME", payload: "admin@admin.com" });
+      dispatch({ type: "SET_CART", payload: [] });
       navigate("/employee/mainPage");
-    } else {
     }
-    //}
   }
 
   function handleInput(e) {
@@ -37,8 +46,6 @@ const Login = () => {
     if (isUsernameRemebered) {
       localStorage.setItem("username", value);
     }
-
-    console.log(user);
   }
 
   useEffect(() => {

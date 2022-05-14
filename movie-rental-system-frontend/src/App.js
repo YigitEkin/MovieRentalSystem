@@ -10,39 +10,47 @@ import MyMovies from "./Pages/Customer/MyMovies";
 import Friends from "./Pages/Customer/Friends";
 import ForgotPassword from "./Pages/ForgotPassword";
 import { Routes, Route } from "react-router-dom";
+import { initialState } from "./StateManagement/initialState";
+import { reducer } from "./StateManagement/reducer";
+import { useReducer, createContext } from "react";
 import "../src/App.css";
+export let Context;
 function App() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  Context = createContext(state);
   return (
-    <Routes>
-      <Route exact path="/" element={<Login />} />
-      <Route exact path="/employee/mainPage" element={<EmployeeAddMovie />} />
-      <Route exact path="/signup" element={<SignUp />} />
-      <Route
-        exact
-        path="/employee/deleteUser"
-        element={<EmployeeDeleteUser />}
-      />
-      <Route exact path="/employee/addMovie" element={<EmployeeAddMovie />} />
-      <Route
-        exact
-        path="/employee/deleteMovie"
-        element={<EmployeeDeleteMovie />}
-      />
-      <Route
-        exact
-        path="/customer/mainPage"
-        element={<CustomerSearchMovie />}
-      />
-      <Route
-        exact
-        path="/customer/requestMovie"
-        element={<CustomerRequestMovie />}
-      />
-      <Route exact path="/customer/payment" element={<CustomerPayment />} />
-      <Route exact path="/customer/myMovies" element={<MyMovies />} />
-      <Route exact path="/customer/friends" element={<Friends />} />
-      <Route exact path="/forgotPassword" element={<ForgotPassword />} />
-    </Routes>
+    <Context.Provider value={[state, dispatch]}>
+      <Routes>
+        <Route exact path="/" element={<Login />} />
+        <Route exact path="/employee/mainPage" element={<EmployeeAddMovie />} />
+        <Route exact path="/signup" element={<SignUp />} />
+        <Route
+          exact
+          path="/employee/deleteUser"
+          element={<EmployeeDeleteUser />}
+        />
+        <Route exact path="/employee/addMovie" element={<EmployeeAddMovie />} />
+        <Route
+          exact
+          path="/employee/deleteMovie"
+          element={<EmployeeDeleteMovie />}
+        />
+        <Route
+          exact
+          path="/customer/mainPage"
+          element={<CustomerSearchMovie />}
+        />
+        <Route
+          exact
+          path="/customer/requestMovie"
+          element={<CustomerRequestMovie />}
+        />
+        <Route exact path="/customer/payment" element={<CustomerPayment />} />
+        <Route exact path="/customer/myMovies" element={<MyMovies />} />
+        <Route exact path="/customer/friends" element={<Friends />} />
+        <Route exact path="/forgotPassword" element={<ForgotPassword />} />
+      </Routes>
+    </Context.Provider>
   );
 }
 

@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import Navbar from "../../Components/NavbarEmployee";
 import Logo from "../../images/gora.jpeg";
 import DeleteMovieCard from "../../Components/DeleteMovieCard";
+import { useContext } from "react";
+import { Context } from "../../App";
 
 const tempMovies = [
   {
@@ -39,7 +41,8 @@ const tempMovies = [
   },
 ];
 
-const DeleteMovie = ({ name }) => {
+const DeleteMovie = () => {
+  const [state, dispatch] = useContext(Context);
   const [movies, setMovies] = useState(tempMovies);
   const [filteredMovies, setfilteredMovies] = useState(movies);
   const searchBar = useRef(null);
@@ -69,7 +72,7 @@ const DeleteMovie = ({ name }) => {
 
   return (
     <>
-      <Navbar name={name} />
+      <Navbar name={state.user_name} />
       <div className="container">
         <label
           className="display-4 text-center text-light d-block"
