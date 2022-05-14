@@ -16,10 +16,10 @@ const Login = () => {
     e.preventDefault();
     //axios.get("http://localhost:8081/Login", user).then().then();
     //router.push("/")
+    navigate("/customer/mainPage");
     if (user.user_name === "admin@admin.com" || user.password === 123456) {
       navigate("/employee/mainPage");
     } else {
-      navigate("/customer/mainPage");
     }
     //}
   }

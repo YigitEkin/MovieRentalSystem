@@ -6,7 +6,7 @@ import Login from "./Pages/Login";
 import CustomerSearchMovie from "./Pages/Customer/SearchMovie";
 import CustomerRequestMovie from "./Pages/Customer/RequestMovie";
 import CustomerPayment from "./Pages/Customer/Payment";
-import RentedMovies from "./Pages/Customer/RentedMovies";
+import MyMovies from "./Pages/Customer/MyMovies";
 import Friends from "./Pages/Customer/Friends";
 import { Routes, Route } from "react-router-dom";
 import "../src/App.css";
@@ -38,7 +38,7 @@ function App() {
         element={<CustomerRequestMovie />}
       />
       <Route exact path="/customer/payment" element={<CustomerPayment />} />
-      <Route exact path="/customer/rentMovies" element={<RentedMovies />} />
+      <Route exact path="/customer/myMovies" element={<MyMovies />} />
       <Route exact path="/customer/friends" element={<Friends />} />
     </Routes>
   );

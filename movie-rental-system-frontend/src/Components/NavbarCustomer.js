@@ -39,9 +39,9 @@ const Navbar = ({ name }) => {
             <li className="nav-item">
               <div
                 className="nav-link text-white"
-                onClick={() => navigate("/customer/rentMovies")}
+                onClick={() => navigate("/customer/myMovies")}
               >
-                Rented Movies
+                Personal Movies
               </div>
             </li>
             <li className="nav-item">

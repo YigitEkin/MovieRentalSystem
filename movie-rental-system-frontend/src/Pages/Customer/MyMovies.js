@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../../Components/NavbarCustomer";
 
-const Rentedmovies = () => {
+const MyMovies = () => {
   return (
     <>
       <Navbar name={"Ytekin12"} />
@@ -10,4 +10,4 @@ const Rentedmovies = () => {
   );
 };
 
-export default Rentedmovies;
+export default MyMovies;

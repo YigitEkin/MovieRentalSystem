@@ -20,11 +20,14 @@ const MovieCard = ({
     <img src={img_url} className="card-img-top img" alt="..." />
     <div className="card-body">
       <div className="row">
-        <h5 className="card-title col-6">{title}</h5>
-        <h5 className="card-title col-6 text-right ">{`Rating:  ${rating}/10`}</h5>
+        <h5 className="card-title col-10">{title}</h5>
+        <h5 className="card-title col-2">{`Rating:  ${rating}`}</h5>
       </div>
       <div className="row">
-        <h5 className="card-title col-12">{`Director:  ${director}`}</h5>
+        <h5 className="card-title col-10">{`Director:  ${director}`}</h5>
+        <h5 className="card-title col-2">{"<3"}</h5>
+      </div>
+      <div className="row">
         <h5 className="card-title col-12">{`Genre:  ${genre}`}</h5>
       </div>
       <p className="card-text">{description}</p>

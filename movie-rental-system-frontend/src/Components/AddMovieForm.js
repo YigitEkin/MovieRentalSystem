@@ -157,8 +157,9 @@ const Addmovieform = ({ handleAddMovie }) => {
         <div className="form-group col-md-6">
           <label htmlFor="price">Image</label>
           <input
-            type={"file"}
+            type={"text"}
             ref={image}
+            placeholder={"Url for the image of the file "}
             accept=".jpg, .jpeg, .png"
             className="form-control"
             id="price"
