@@ -47,6 +47,10 @@ public class Movie implements Serializable {
     @JsonIgnore
     private List<Rent> customerRents;
 
+    @OneToMany(mappedBy = "movie_id", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Recommend> recommends;
+
     private Date movie_register_date;
 
     public Movie(String movie_title, int production_year, String director, String genre, double price, Employee employee, Date time) {

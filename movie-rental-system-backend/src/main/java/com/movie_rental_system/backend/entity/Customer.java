@@ -22,7 +22,19 @@ public class Customer extends User {
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Friend> friends;
+    private List<Friend> friends_customer;
+
+    @OneToMany(mappedBy = "friend", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Friend> friends_friend;
+
+    @OneToMany(mappedBy = "recommended_user_name", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Recommend> recommends_recommended;
+
+    @OneToMany(mappedBy = "recommender_user_name", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Recommend> recommends_recommender;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     @JsonIgnore
@@ -56,7 +68,7 @@ public class Customer extends User {
     public Customer(String user_name, String password, String email, Date birthday, double balance, List<Friend> friends, List<Card> cards, List<MovieRequest> requests) {
         super(user_name, password, email, birthday);
         this.balance = balance;
-        this.friends = friends;
+        this.friends_customer = friends;
         this.cards = cards;
         this.requests = requests;
     }

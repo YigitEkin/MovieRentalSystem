@@ -3,6 +3,7 @@ package com.movie_rental_system.backend.controller;
 import com.movie_rental_system.backend.dto.CardDTO;
 import com.movie_rental_system.backend.dto.FriendDTO;
 import com.movie_rental_system.backend.dto.MovieReviewDTO;
+import com.movie_rental_system.backend.dto.RecommendDTO;
 import com.movie_rental_system.backend.entity.*;
 import com.movie_rental_system.backend.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +21,16 @@ public class CustomerController {
     private final CardService cardService;
     private final MovieRequestService movieRequestService;
     private final MovieReviewService movieReviewService;
+    private final RecommendService recommendService;
 
     @Autowired
-    public CustomerController(CustomerService customerService, FriendService friendService, CardService cardService, MovieRequestService movieRequestService, MovieReviewService movieReviewService) {
+    public CustomerController(CustomerService customerService, FriendService friendService, CardService cardService, MovieRequestService movieRequestService, MovieReviewService movieReviewService, RecommendService recommendService) {
         this.customerService = customerService;
         this.friendService = friendService;
         this.cardService = cardService;
         this.movieRequestService = movieRequestService;
         this.movieReviewService = movieReviewService;
+        this.recommendService = recommendService;
     }
 
 
@@ -178,6 +181,21 @@ public class CustomerController {
     public ResponseEntity<Movie> rentMovie(@PathVariable String customer_name, @PathVariable Integer movie_id) {
         return ResponseEntity.ok(customerService.rentMovie(customer_name, movie_id));
     }
+
+    // -----------------recommend endpoints------------------
+
+    // get recommends where customer is recommender
+    @GetMapping("/{customer_name}/recommender")
+    public ResponseEntity<List<RecommendDTO>> getRecommends(@PathVariable String customer_name) {
+        return ResponseEntity.ok(RecommendDTO.toRecommendDTOList(recommendService.getRecommendByRecommender(customer_name)));
+    }
+
+    // get recommends where customer is recommended
+    @GetMapping("/{customer_name}/recommended")
+    public ResponseEntity<List<RecommendDTO>> getRecommended(@PathVariable String customer_name) {
+        return ResponseEntity.ok(RecommendDTO.toRecommendDTOList(recommendService.getRecommendByRecommended(customer_name)));
+    }
+
 
     // unrent a movie ???
 }
