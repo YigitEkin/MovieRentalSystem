@@ -52,7 +52,6 @@ const Reviewinfo = ({
                 </button>
               </div>
             </div>
-            {console.log(isSpoilerClicked)}
             {isSpoilerClicked ? (
               <div id="collapseExample">
                 <div

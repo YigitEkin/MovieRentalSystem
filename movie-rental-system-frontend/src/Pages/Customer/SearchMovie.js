@@ -67,6 +67,7 @@ const moviesTemp = [
 ];
 
 const SearchMovie = ({ name }) => {
+  console.log("mounted");
   const [filter, setFilter] = useState("");
   const [price, setPrice] = useState(false);
   const [rating, setRating] = useState(false);

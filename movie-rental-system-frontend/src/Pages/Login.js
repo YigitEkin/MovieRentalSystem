@@ -116,9 +116,6 @@ const Login = () => {
               <button type="submit" className="btn btn-block submit-btn">
                 Login
               </button>
-              {
-                //These will be changed into react routes
-              }
             </form>
             <div className="row mt-3">
               <div className="col-12 ml-2 p-2">
