@@ -8,6 +8,7 @@ import CustomerRequestMovie from "./Pages/Customer/RequestMovie";
 import CustomerPayment from "./Pages/Customer/Payment";
 import MyMovies from "./Pages/Customer/MyMovies";
 import Friends from "./Pages/Customer/Friends";
+import ForgotPassword from "./Pages/ForgotPassword";
 import { Routes, Route } from "react-router-dom";
 import "../src/App.css";
 function App() {
@@ -40,6 +41,7 @@ function App() {
       <Route exact path="/customer/payment" element={<CustomerPayment />} />
       <Route exact path="/customer/myMovies" element={<MyMovies />} />
       <Route exact path="/customer/friends" element={<Friends />} />
+      <Route exact path="/forgotPassword" element={<ForgotPassword />} />
     </Routes>
   );
 }

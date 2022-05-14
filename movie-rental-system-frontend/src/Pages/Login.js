@@ -125,9 +125,9 @@ const Login = () => {
                 <Link to={"/signup"}>
                   <p className="text-red large-text">Don't have an account?</p>
                 </Link>
-                <a href="ForgotPassword.js">
+                <div onClick={() => navigate("/forgotPassword")}>
                   <p className="text-red large-text">Forgot my Password</p>
-                </a>
+                </div>
               </div>
             </div>
           </div>
