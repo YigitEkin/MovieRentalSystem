@@ -77,7 +77,7 @@ public class MovieController {
         return ResponseEntity.ok(movieService.getAllDeletedMovies());
     }
 
-    @GetMapping(value = "deleted/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/deleted/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DeletedMovie> getDeletedMovieById(@PathVariable Integer id){
         return ResponseEntity.ok(movieService.findDeletedMovieById(id));
     }

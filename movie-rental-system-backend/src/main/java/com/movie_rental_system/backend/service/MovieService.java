@@ -59,7 +59,15 @@ public class MovieService {
     // update movie
     public Movie updateMovie(Integer id, MovieDTO movieDTO) {
             if (movieRepository.existsById(id)) {
-                return movieRepository.save(new Movie(movieDTO.getMovie_title(),movieDTO.getProduction_year() ,movieDTO.getDirector(),movieDTO.getGenre(),movieDTO.getPrice(), employeeService.getEmployeeByName(movieDTO.getEmployee_name()), Calendar.getInstance().getTime()));
+                Movie movie = movieRepository.findById(id).get();
+                movie.setMovie_title(movieDTO.getMovie_title());
+                movie.setDirector(movieDTO.getDirector());
+                movie.setGenre(movieDTO.getGenre());
+                movie.setProduction_year(movieDTO.getProduction_year());
+                movie.setPrice(movieDTO.getPrice());
+                movie.setEmployee(employeeService.getEmployeeByName(movieDTO.getEmployee_name()));
+                movie.setProduction_year(movieDTO.getProduction_year());
+                return movieRepository.save(movie);
             }else {
                 throw new MovieNotFoundException("Movie with id " + id + " is not found");
             }
