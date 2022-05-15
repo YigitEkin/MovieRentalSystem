@@ -14,24 +14,53 @@ const Login = () => {
   const [isUsernameRemebered, setIsUsernameRemebered] = useState(false);
   const userNameInput = useRef(null);
   const checkbox = useRef(null);
+  const passwordInput = useRef(null);
   const navigate = useNavigate();
 
   function handleLogin(e) {
     e.preventDefault();
-    //axios.get("http://localhost:8081/Login", user).then().then();
-    //router.push("/")
-    navigate("/customer/mainPage");
-    dispatch({ type: "SET_USER_ID", payload: 1 });
-    dispatch({ type: "SET_USER_NAME", payload: user.user_name });
-    dispatch({ type: "SET_CART", payload: [] });
-    dispatch({ type: "SET_BUDGET", payload: 100 });
-
-    if (user.user_name === "admin@admin.com" || user.password === 123456) {
-      dispatch({ type: "SET_USER_ID", payload: "admin" });
-      dispatch({ type: "SET_USER_NAME", payload: "admin@admin.com" });
-      dispatch({ type: "SET_CART", payload: [] });
-      navigate("/employee/mainPage");
-    }
+    const user = {
+      user_name: userNameInput.current.value,
+      password: passwordInput.current.value,
+    };
+    axios
+      .get(`http://localhost:8081/customers/${user.user_name}`)
+      .then((res) => {
+        const customers = res.data;
+        console.log(customers);
+        if (customers) {
+          if (customers.password === passwordInput.current.value) {
+            navigate("/customer/mainPage");
+            dispatch({ type: "SET_USER_ID", payload: customers.user_name });
+            dispatch({ type: "SET_USER_NAME", payload: customers.user_name });
+            dispatch({ type: "SET_CART", payload: [] });
+            dispatch({ type: "SET_BUDGET", payload: customers.balance });
+          } else {
+            alert("Wrong Password");
+          }
+        }
+      })
+      .catch((err) => {
+        axios
+          .get(`http://localhost:8081/employee/${user.user_name}`)
+          .then((res) => {
+            const customers = res.data;
+            console.log(customers);
+            if (customers) {
+              if (customers.password === passwordInput.current.value) {
+                dispatch({ type: "SET_USER_ID", payload: "admin" });
+                dispatch({ type: "SET_USER_NAME", payload: "admin@admin.com" });
+                dispatch({ type: "SET_CART", payload: [] });
+                navigate("/employee/mainPage");
+              } else {
+                alert("Wrong password");
+              }
+            }
+          })
+          .catch((err) => {
+            alert("User not found");
+          });
+      });
   }
 
   function handleInput(e) {
@@ -107,6 +136,7 @@ const Login = () => {
                   placeholder="PASSWORD"
                   onChange={handleInput}
                   required
+                  ref={passwordInput}
                 />
               </div>
               <div className="form-group form-check">

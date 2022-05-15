@@ -1,29 +1,36 @@
 import { Axios } from "axios";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "../stylesheets/signup.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
 const SignUp = () => {
-  const [user, setUser] = useState({
-    user_name: "",
-    user_email: "",
-    password: "",
-    birth_year: "",
-  });
-
+  const user_name = useRef(null);
+  const email = useRef(null);
+  const password = useRef(null);
+  const birth_year = useRef(null);
+  /*
+            "user_name": "user231",
+            "password": "customer password",
+            "user_email": "customer email",
+            "birth_year": "2022-05-20",
+            "balance": 0,
+            "promotion_code": "aaaa"
+*/
   function handleSubmit(e) {
     e.preventDefault();
-    //year should be casted to number
-    //axios.get("http://localhost:8081/Signup", user).then().then();
-  }
-
-  function handleChange(e) {
-    const key = e.target.id;
-    const value = e.target.value;
-    let obj = user;
-    obj[key] = value;
-    setUser(obj);
+    const user = {
+      user_name: user_name.current.value,
+      password: password.current.value,
+      user_email: email.current.value,
+      birth_year: birth_year.current.value,
+      balance: 0,
+      promotion_code: "aaaa",
+    };
+    console.log(user);
+    axios.post("http://localhost:8081/customers", user).then((res) => {
+      console.log(res);
+    });
   }
 
   return (
@@ -42,11 +49,11 @@ const SignUp = () => {
           </label>
           <input
             type="text"
+            ref={user_name}
             required
             className="form-control"
             id="exampleInputPassword1"
             placeholder="exampleUser1"
-            onChange={handleChange}
           />
         </div>
         <div className="form-group">
@@ -56,11 +63,11 @@ const SignUp = () => {
           <input
             type="email"
             required
+            ref={email}
             className="form-control"
             id="exampleInputEmail1"
             aria-describedby="emailHelp"
             placeholder="a@b.com"
-            onChange={handleChange}
           />
         </div>
         <div className="form-group">
@@ -70,10 +77,10 @@ const SignUp = () => {
           <input
             type="password"
             required
+            ref={password}
             className="form-control"
             id="exampleInputPassword1"
             placeholder="examplePassword1"
-            onChange={handleChange}
           />
         </div>
         <div className="form-group">
@@ -83,11 +90,11 @@ const SignUp = () => {
           <input
             type="date"
             required
+            ref={birth_year}
             min={"1990-01-01"}
             max={new Date().toISOString().split("T")[0]}
             className="form-control"
             id="birthDate"
-            onChange={handleChange}
           />
         </div>
         <button type="submit" className="btn submit-btn">
