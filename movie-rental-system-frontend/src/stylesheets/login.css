@@ -1,0 +1,78 @@
+.border-left-red {
+  border-left: solid 5px red;
+}
+
+.box-shadow {
+  box-shadow: 0px 0px 98px 63px rgba(255, 0, 0, 0.75);
+  -webkit-box-shadow: 0px 0px 98px 63px rgba(255, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 98px 63px rgba(255, 0, 0, 0.75);
+}
+.login-form {
+  color: whitesmoke;
+}
+
+.text-gray {
+  color: rgb(172, 169, 169);
+}
+
+.logo-styling-login {
+  height: 22.5rem;
+  width: 90%;
+}
+
+.submit-btn {
+  background-color: red;
+  color: white;
+}
+
+.center {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(0, 0, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.large-text {
+  font-size: 1rem;
+}
+
+.m-none {
+  margin: 0%;
+}
+
+.text-red {
+  color: red;
+}
+
+.black-bg {
+  background-color: black;
+}
+
+@media screen and (max-width: 767px) {
+  .login-form {
+    width: 100%;
+  }
+  .border-left-red {
+    border-left: none;
+  }
+  .box-shadow {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+  }
+  .logo-small {
+    width: 60%;
+    display: block;
+  }
+}
+
+.full-align {
+  width: 100%;
+  height: 100%;
+}
+
+.checkbox-red {
+  accent-color: red;
+}
