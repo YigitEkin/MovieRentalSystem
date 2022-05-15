@@ -21,11 +21,6 @@ public class BackendApplication {
     @Bean
     public CommandLineRunner lineRunner(UserRepository userRepository){
         return args -> {
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(2019, 12, 30);
-            userRepository.saveAll(Arrays.asList(
-                    new User("user1", "password1", "email1@gmail.com", calendar.getTime())
-            ));
         };
     }
 
