@@ -20,6 +20,7 @@ export let Context;
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
   Context = createContext(state);
+
   return (
     <Context.Provider value={[state, dispatch]}>
       <Routes>
