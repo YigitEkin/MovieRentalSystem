@@ -51,9 +51,14 @@ public class Movie implements Serializable {
     @JsonIgnore
     private List<Recommend> recommends;
 
+    @ManyToMany(mappedBy = "movies", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JsonIgnore
+    private List<Actor> actors;
+
+
     private Date movie_register_date;
 
-    public Movie(String movie_title, int production_year, String director, String genre, double price, Employee employee, Date time) {
+    public Movie(String movie_title, int production_year, String director, String genre, double price, Employee employee, Date time, List<Actor> actors) {
         this.movie_title = movie_title;
         this.production_year = production_year;
         this.director = director;
@@ -61,6 +66,7 @@ public class Movie implements Serializable {
         this.price = price;
         this.employee = employee;
         this.movie_register_date = time;
+        this.actors = actors;
     }
 }
 

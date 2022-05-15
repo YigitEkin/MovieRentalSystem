@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 public class MovieDTO {
@@ -16,4 +18,6 @@ public class MovieDTO {
     private double price;
 
     private String employee_name;
+
+    private List<Integer> actors;
 }

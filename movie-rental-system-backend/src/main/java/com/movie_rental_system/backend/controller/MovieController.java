@@ -2,10 +2,7 @@ package com.movie_rental_system.backend.controller;
 
 import com.movie_rental_system.backend.dto.MovieDTO;
 import com.movie_rental_system.backend.dto.MovieReviewDTO;
-import com.movie_rental_system.backend.entity.Customer;
-import com.movie_rental_system.backend.entity.DeletedMovie;
-import com.movie_rental_system.backend.entity.Movie;
-import com.movie_rental_system.backend.entity.User;
+import com.movie_rental_system.backend.entity.*;
 import com.movie_rental_system.backend.service.MovieReviewService;
 import com.movie_rental_system.backend.service.MovieService;
 import com.movie_rental_system.backend.service.UserService;
@@ -80,6 +77,11 @@ public class MovieController {
     @GetMapping(value = "/deleted/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DeletedMovie> getDeletedMovieById(@PathVariable Integer id){
         return ResponseEntity.ok(movieService.findDeletedMovieById(id));
+    }
+
+    @GetMapping(value = "/{id}/actors", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Actor>> getActorsOfMovie(@PathVariable Integer id){
+        return ResponseEntity.ok(movieService.getMovieActors(id));
     }
 
 

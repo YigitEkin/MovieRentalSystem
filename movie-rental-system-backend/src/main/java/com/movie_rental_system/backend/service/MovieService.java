@@ -2,16 +2,14 @@ package com.movie_rental_system.backend.service;
 
 import com.movie_rental_system.backend.dto.MovieDTO;
 import com.movie_rental_system.backend.entity.*;
-import com.movie_rental_system.backend.exception.CustomerNotFoundException;
-import com.movie_rental_system.backend.exception.InvalidDateFormatException;
 import com.movie_rental_system.backend.exception.MovieNotFoundException;
+import com.movie_rental_system.backend.repository.ActorRepository;
 import com.movie_rental_system.backend.repository.DeletedMovieRepository;
 import com.movie_rental_system.backend.repository.MovieRepository;
 import com.movie_rental_system.backend.repository.MovieReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -20,14 +18,16 @@ public class MovieService {
     private final DeletedMovieRepository deletedMovieRepository;
     private final EmployeeService employeeService;
     private final MovieReviewRepository movieReviewRepository;
+    private final ActorRepository actorRepository;
 
     @Autowired
     public MovieService(MovieRepository movieRepository, EmployeeService employeeService, MovieReviewRepository movieReviewRepository,
-                        DeletedMovieRepository deletedMovieRepository) {
+                        DeletedMovieRepository deletedMovieRepository, ActorRepository actorRepository) {
         this.movieRepository = movieRepository;
         this.employeeService = employeeService;
         this.movieReviewRepository = movieReviewRepository;
         this.deletedMovieRepository = deletedMovieRepository;
+        this.actorRepository = actorRepository;
     }
 
 
@@ -52,12 +52,24 @@ public class MovieService {
 
     public Movie addNewMovie(MovieDTO movieDTO) {
         Objects.requireNonNull(movieDTO, "movie cannot be null");
-        Movie movie1 = new Movie(movieDTO.getMovie_title(),movieDTO.getProduction_year() ,movieDTO.getDirector(),movieDTO.getGenre(),movieDTO.getPrice(), employeeService.getEmployeeByName(movieDTO.getEmployee_name()), Calendar.getInstance().getTime());
+        List<Actor> actorList = new ArrayList<>();
+        for(Integer actorId : movieDTO.getActors()){
+            Actor actor = actorRepository.getById(actorId);
+            actorList.add(actor);
+        }
+        Movie movie1 = new Movie(movieDTO.getMovie_title(),movieDTO.getProduction_year() ,movieDTO.getDirector(),movieDTO.getGenre(),movieDTO.getPrice(), employeeService.getEmployeeByName(movieDTO.getEmployee_name()), Calendar.getInstance().getTime(),actorList);
+        movieRepository.save(movie1);
+        for(Actor actor : actorList){
+            actor.getMovies().add(movie1);
+            actorRepository.save(actor);
+        }
+        movie1.setActors(actorList);
         return movieRepository.save(movie1);
     }
 
     // update movie
     public Movie updateMovie(Integer id, MovieDTO movieDTO) {
+        Objects.requireNonNull(movieDTO, "movie cannot be null");
             if (movieRepository.existsById(id)) {
                 Movie movie = movieRepository.findById(id).get();
                 movie.setMovie_title(movieDTO.getMovie_title());
@@ -114,5 +126,12 @@ public class MovieService {
 
     public DeletedMovie findDeletedMovieById(Integer id){
         return deletedMovieRepository.findById(id).orElse(null);
+    }
+
+    public List<Actor> getMovieActors(Integer movie_id){
+        Movie movie = movieRepository.findById(movie_id).orElse(null);
+        if(movie == null)
+            throw new MovieNotFoundException("Movie with id " + movie_id + " is not found");
+        return movie.getActors();
     }
 }
