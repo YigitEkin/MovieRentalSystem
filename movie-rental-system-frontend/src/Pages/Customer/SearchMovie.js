@@ -92,7 +92,7 @@ const SearchMovie = () => {
     //  setMovies(res.data);
     //}
     //setMovies(moviesTemp);
-  }, []);
+  });
 
   return (
     <div className="allpage bg-black">

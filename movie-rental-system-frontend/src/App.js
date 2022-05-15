@@ -7,7 +7,7 @@ import CustomerSearchMovie from "./Pages/Customer/SearchMovie";
 import CustomerRequestMovie from "./Pages/Customer/RequestMovie";
 import CustomerPayment from "./Pages/Customer/Payment";
 import MyMovies from "./Pages/Customer/MyMovies";
-import Friends from "./Pages/Customer/Friends";
+import Friends from "./Pages/Customer/RemoveFriends";
 import ForgotPassword from "./Pages/ForgotPassword";
 import { Routes, Route } from "react-router-dom";
 import { initialState } from "./StateManagement/initialState";

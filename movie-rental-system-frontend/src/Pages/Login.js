@@ -24,6 +24,7 @@ const Login = () => {
     dispatch({ type: "SET_USER_ID", payload: 1 });
     dispatch({ type: "SET_USER_NAME", payload: user.user_name });
     dispatch({ type: "SET_CART", payload: [] });
+    dispatch({ type: "SET_BUDGET", payload: 100 });
 
     if (user.user_name === "admin@admin.com" || user.password === 123456) {
       dispatch({ type: "SET_USER_ID", payload: "admin" });

@@ -83,7 +83,7 @@ const MovieCard = ({
               onClick={() => {
                 dispatch({
                   type: "SET_CART",
-                  payload: { id: id, title: title, price: price },
+                  payload: { id: id, title: title, price: +price },
                 });
               }}
             >
