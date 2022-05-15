@@ -7,8 +7,10 @@ import CustomerSearchMovie from "./Pages/Customer/SearchMovie";
 import CustomerRequestMovie from "./Pages/Customer/RequestMovie";
 import CustomerPayment from "./Pages/Customer/Payment";
 import MyMovies from "./Pages/Customer/MyMovies";
-import Friends from "./Pages/Customer/RemoveFriends";
+import Friends from "./Pages/Customer/Friends";
 import ForgotPassword from "./Pages/ForgotPassword";
+import Recommendedmovies from "./Pages/Customer/RecommendedMovies";
+import Recommendmovie from "./Pages/Customer/RecommendMovie";
 import { Routes, Route } from "react-router-dom";
 import { initialState } from "./StateManagement/initialState";
 import { reducer } from "./StateManagement/reducer";
@@ -49,6 +51,16 @@ function App() {
         <Route exact path="/customer/myMovies" element={<MyMovies />} />
         <Route exact path="/customer/friends" element={<Friends />} />
         <Route exact path="/forgotPassword" element={<ForgotPassword />} />
+        <Route
+          exact
+          path="/customer/recommendedMovies"
+          element={<Recommendedmovies />}
+        />
+        <Route
+          exact
+          path="/customer/recommendMovie"
+          element={<Recommendmovie />}
+        />
       </Routes>
     </Context.Provider>
   );

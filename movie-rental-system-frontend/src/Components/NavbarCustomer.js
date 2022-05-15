@@ -44,7 +44,7 @@ const Navbar = ({ name }) => {
                 className="nav-link text-white"
                 onClick={() => navigate("/customer/myMovies")}
               >
-                Personal Movies
+                Personal
               </div>
             </li>
             <li className="nav-item">
@@ -69,6 +69,22 @@ const Navbar = ({ name }) => {
                 onClick={() => navigate("/customer/payment")}
               >
                 Payment
+              </div>
+            </li>
+            <li className="nav-item">
+              <div
+                className="nav-link text-white"
+                onClick={() => navigate("/customer/recommendMovie")}
+              >
+                Recommend Movie
+              </div>
+            </li>
+            <li className="nav-item">
+              <div
+                className="nav-link text-white"
+                onClick={() => navigate("/customer/recommendedMovies")}
+              >
+                Recommendations
               </div>
             </li>
             <li className="nav-item">
