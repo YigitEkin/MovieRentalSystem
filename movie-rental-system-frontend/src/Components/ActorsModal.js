@@ -31,9 +31,13 @@ function ActorsModal({ actors, id }) {
               </button>
             </div>
             <div className="modal-body">
-              {actors.map((item, index) => {
-                return <h1 key={index}>{`${index + 1}) ${item}`}</h1>;
-              })}
+              {actors?.length > 0 ? (
+                actors.map((item, index) => {
+                  return <h1 key={index}>{`${index + 1}) ${item}`}</h1>;
+                })
+              ) : (
+                <h1>No Actors</h1>
+              )}
             </div>
             <div className="modal-footer">
               <button

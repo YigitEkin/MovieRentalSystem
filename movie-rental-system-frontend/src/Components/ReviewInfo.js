@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 const Reviewinfo = ({
   date,
@@ -7,7 +8,9 @@ const Reviewinfo = ({
   review_message,
   spoiler,
   net_like_count,
-  index,
+  review_id,
+  movie_id,
+  review_date,
 }) => {
   const [like_count, set_like_count] = useState(net_like_count);
   const [liked, set_liked] = useState(false);
@@ -15,11 +18,43 @@ const Reviewinfo = ({
 
   const like = () => {
     if (liked) {
-      set_like_count(like_count - 1);
-      set_liked(false);
+      axios
+        .put(`http://localhost:8081/movie_reviews/${review_id}`, {
+          net_like: like_count - 1,
+          review_id: review_id,
+          movie_id: movie_id,
+          review_date: review_date,
+          customer_name: user,
+          rating: rating,
+          review_message: review_message,
+          spoiler: spoiler,
+        })
+        .then((res) => {
+          set_like_count(like_count - 1);
+          set_liked(false);
+        })
+        .catch((err) => {
+          alert("Error in disliking");
+        });
     } else {
-      set_like_count(like_count + 1);
-      set_liked(true);
+      axios
+        .put(`http://localhost:8081/movie_reviews/${review_id}`, {
+          net_like: like_count + 1,
+          review_id: review_id,
+          movie_id: movie_id,
+          review_date: review_date,
+          customer_name: user,
+          rating: rating,
+          review_message: review_message,
+          spoiler: spoiler,
+        })
+        .then((res) => {
+          set_like_count(like_count + 1);
+          set_liked(true);
+        })
+        .catch((err) => {
+          alert("Error in liking review");
+        });
     }
   };
 
@@ -92,7 +127,7 @@ const Reviewinfo = ({
                 {review_message}
                 <div className="mt-1">
                   <h1 style={{ fontSize: "1.4rem" }}>
-                    Rating: {rating + "/10"}
+                    Rating: {rating.toFixed(2) + "/10"}
                   </h1>
                 </div>
               </div>

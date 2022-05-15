@@ -1,4 +1,5 @@
-import { useRef } from "react";
+import { useRef, useContext } from "react";
+import { Context } from "../App";
 import React from "react";
 
 //actors
@@ -7,11 +8,11 @@ import React from "react";
 //price
 
 const Addmovieform = ({ handleAddMovie }) => {
+  const [state, dispatch] = useContext(Context);
   const title = useRef(null);
   const director = useRef(null);
   const year = useRef(null);
   const genre = useRef(null);
-  const description = useRef(null);
   const actors = useRef(null);
   const price = useRef(null);
   const image = useRef(null);
@@ -44,10 +45,8 @@ const Addmovieform = ({ handleAddMovie }) => {
       director.current.value !== "" &&
       year.current.value !== "" &&
       genre.current.value !== "" &&
-      description.current.value !== "" &&
       actors.current.value !== "" &&
-      price.current.value !== "" &&
-      image.current.value !== "";
+      price.current.value !== "";
 
     if (isFormValid) {
       const movie = {
@@ -55,24 +54,29 @@ const Addmovieform = ({ handleAddMovie }) => {
         director: director.current.value,
         year: +year.current.value,
         genre: genre.current.value,
-        description: description.current.value,
         actors: handleActors(),
         price: +price.current.value,
-        image: image.current.value,
       };
-      handleAddMovie(title.current.value);
+      handleAddMovie(
+        title.current.value,
+        +year.current.value,
+        director.current.value,
+        genre.current.value,
+        +price.current.value,
+        state.user_name
+      );
+
       title.current.value = "";
       director.current.value = "";
       year.current.value = "";
       genre.current.value = "";
-      description.current.value = "";
       actors.current.value = "";
       price.current.value = "";
-      image.current.value = "";
     } else {
       alert("Bad credentials");
     }
   }
+
   return (
     <form className="px-5 py-2">
       <div className="form-row">
@@ -120,16 +124,6 @@ const Addmovieform = ({ handleAddMovie }) => {
         </div>
       </div>
       <div className="form-group">
-        <label htmlFor="textarea1">Description</label>
-        <textarea
-          rows={5}
-          placeholder={"A brief description about the movie"}
-          className="form-control"
-          ref={description}
-          id="textarea1"
-        />
-      </div>
-      <div className="form-group">
         <label htmlFor="textarea2">
           Actors (Enter the actors in comma separted fashion)
         </label>
@@ -141,7 +135,7 @@ const Addmovieform = ({ handleAddMovie }) => {
         />
       </div>
       <div className="form-row">
-        <div className="form-group col-md-6">
+        <div className="form-group col-md-12">
           <label htmlFor="price">Price</label>
           <input
             type={"number"}
@@ -149,17 +143,6 @@ const Addmovieform = ({ handleAddMovie }) => {
             placeholder={20.99}
             ref={price}
             step={0.01}
-            className="form-control"
-            id="price"
-          />
-        </div>
-        <div className="form-group col-md-6">
-          <label htmlFor="price">Image</label>
-          <input
-            type={"text"}
-            ref={image}
-            placeholder={"Url for the image of the file "}
-            accept=".jpg, .jpeg, .png"
             className="form-control"
             id="price"
           />
