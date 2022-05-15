@@ -1,5 +1,5 @@
 import { Axios } from "axios";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "../stylesheets/signup.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -7,25 +7,38 @@ import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState({
-    user_name: "",
-    password: "",
-  });
+  const username = useRef(null);
+  const password = useRef(null);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    //year should be casted to number
-    //axios.get("http://localhost:8081/Signup", user).then().then();
-    navigate("/");
-    alert("Your password has been changed successfully");
-  }
-
-  function handleChange(e) {
-    const key = e.target.id;
-    const value = e.target.value;
-    let obj = user;
-    obj[key] = value;
-    setUser(obj);
+    const userName = username.current.value;
+    let user = null;
+    await axios
+      .get(`http://localhost:8081/customers/${userName}`)
+      .then((res) => {
+        console.log(res, "get");
+        user = res.data;
+      })
+      .catch((err) => {
+        alert("User not found");
+      });
+    user = {
+      ...user,
+      password: password.current.value,
+    };
+    await axios
+      .put(`http://localhost:8081/customers/${userName}`, user)
+      .then((res) => {
+        if (res.status === 200) {
+          console.log(res, "put");
+          alert("Password changed successfully");
+          navigate("/");
+        }
+      })
+      .catch((err) => {
+        alert("Error");
+      });
   }
 
   return (
@@ -48,7 +61,7 @@ const ForgotPassword = () => {
             className="form-control"
             id="exampleInputPassword1"
             placeholder="exampleUser1"
-            onChange={handleChange}
+            ref={username}
           />
         </div>
         <div className="form-group">
@@ -61,7 +74,7 @@ const ForgotPassword = () => {
             className="form-control"
             id="exampleInputPassword1"
             placeholder="examplePassword1"
-            onChange={handleChange}
+            ref={password}
           />
         </div>
         <button type="submit" className="btn submit-btn btn-block mt-4">
