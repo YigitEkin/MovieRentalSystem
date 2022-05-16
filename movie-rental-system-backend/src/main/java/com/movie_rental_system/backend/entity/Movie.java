@@ -42,7 +42,10 @@ public class Movie implements Serializable {
     @ManyToMany(mappedBy = "favorites", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JsonIgnore
     private List<Customer> favoritedCustomers;
-
+    @Override
+    public String toString(){
+        return "Movie{ " + movie_title + " }";
+    }
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Rent> customerRents;
