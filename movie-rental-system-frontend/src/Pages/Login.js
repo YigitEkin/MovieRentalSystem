@@ -42,14 +42,17 @@ const Login = () => {
       })
       .catch((err) => {
         axios
-          .get(`http://localhost:8081/employee/${user.user_name}`)
+          .get(`http://localhost:8081/employees/${user.user_name}`)
           .then((res) => {
             const customers = res.data;
             console.log(customers);
             if (customers) {
               if (customers.password === passwordInput.current.value) {
-                dispatch({ type: "SET_USER_ID", payload: "admin" });
-                dispatch({ type: "SET_USER_NAME", payload: "admin@admin.com" });
+                dispatch({ type: "SET_USER_ID", payload: customers.user_name });
+                dispatch({
+                  type: "SET_USER_NAME",
+                  payload: customers.user_name,
+                });
                 dispatch({ type: "SET_CART", payload: [] });
                 navigate("/employee/mainPage");
               } else {

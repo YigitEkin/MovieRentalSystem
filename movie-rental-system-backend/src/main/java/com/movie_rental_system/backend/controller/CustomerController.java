@@ -84,6 +84,7 @@ public class CustomerController {
     }
 
     // delete customer
+    @CrossOrigin(origins = "http://localhost:3000")
     @DeleteMapping("/{customer_name}")
     public ResponseEntity<Customer> deleteCustomer(@PathVariable String customer_name) {
         return ResponseEntity.ok(customerService.deleteCustomer(customer_name));

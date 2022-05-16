@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/recommends")
+@CrossOrigin(origins = "http://localhost:3000")
 public class RecommendController {
     private final RecommendService recommendService;
 

@@ -43,14 +43,28 @@ function AddMovie() {
     //axios //!Date eklemeyi unutma
   }
 
-  function handleAddMovie(title) {
+  function handleAddMovie(title, year, director, genre, price, employee_name) {
     const newRequests = requests.filter(
       (request) => request.title.toLowerCase() !== title.toLowerCase()
     );
     setRequests(newRequests);
-
-    //TODO: implement add movie to database
-    //sendAcceptRequest(item);
+    const request = {
+      movie_title: title,
+      production_year: year,
+      director: director,
+      genre: genre,
+      price: price,
+      employee_name: employee_name,
+    };
+    axios
+      .post("http://localhost:8081/movies", request)
+      .then((res) => {
+        console.log(res.data);
+        alert("Movie added");
+      })
+      .catch((err) => {
+        alert("Movie not added");
+      });
   }
   return (
     <>

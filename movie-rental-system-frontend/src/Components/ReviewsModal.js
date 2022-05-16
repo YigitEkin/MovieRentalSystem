@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import Reviewinfo from "./ReviewInfo";
+import axios from "axios";
 
 //rating *
 //review_message
@@ -42,21 +43,15 @@ const reviewsT = [
   },
 ];
 const Reviewsmodal = ({ id, title, name }) => {
-  const [reviews, setReviews] = useState(reviewsT);
+  const [reviews, setReviews] = useState([]);
   const [isSpoiler, setIsSpoiler] = useState(false);
   const review_message = useRef();
   const rating = useRef();
 
   useEffect(() => {
-    //TODO: fetch reviews for a spesific movie
-    /** *
-        fetch(`http://localhost:5000/api/reviews/${id}`)
-            .then(res => res.json())
-            .then(data => {
-                setReviews(data);
-            }
-            );
-            */
+    axios.get(`http://localhost:8081/movies/${id}/reviews`).then((res) => {
+      setReviews(res.data);
+    });
   }, []);
 
   function validateForm() {
@@ -69,15 +64,34 @@ const Reviewsmodal = ({ id, title, name }) => {
 
   function addReview() {
     if (validateForm()) {
+      /*
+         private Long review_id;
+    private Integer movie_id;
+    private String customer_name;
+    private Double rating;
+    private String review_message;
+    private boolean spoiler;
+    private Integer net_like;
+    private String review_date;
+      */
       const review = {
         review_id: reviews.length + 1,
-        date: new Date().toISOString().slice(0, 10),
-        user: name,
+        movie_id: id,
+        review_date: new Date().toISOString().slice(0, 10),
+        customer_name: name,
         rating: +rating.current.value,
         review_message: review_message.current.value,
         spoiler: isSpoiler,
-        net_like_count: 0,
+        net_like: 0,
       };
+      axios
+        .post(`http://localhost:8081/movie_reviews`, review)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          alert("Error in adding review");
+        });
 
       setReviews([...reviews, review]);
       review_message.current.value = "";
@@ -126,13 +140,16 @@ const Reviewsmodal = ({ id, title, name }) => {
               {reviews.map((review, index) => (
                 <Reviewinfo
                   key={index}
-                  date={review.date}
-                  user={review.user}
+                  date={review.review_date}
+                  user={review.customer_name}
                   rating={review.rating}
                   review_message={review.review_message}
                   spoiler={review.spoiler}
-                  net_like_count={review.net_like_count}
+                  net_like_count={review.net_like}
                   index={index}
+                  review_date={review.review_date}
+                  movie_id={review.movie_id}
+                  review_id={review.review_id}
                 />
               ))}
             </div>
