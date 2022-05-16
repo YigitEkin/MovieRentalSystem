@@ -53,6 +53,11 @@ public class Movie implements Serializable {
 
     private Date movie_register_date;
 
+    @Override
+    public String toString(){
+        return "Movie{ " + movie_title + " }";
+    }
+
     public Movie(String movie_title, int production_year, String director, String genre, double price, Employee employee, Date time) {
         this.movie_title = movie_title;
         this.production_year = production_year;

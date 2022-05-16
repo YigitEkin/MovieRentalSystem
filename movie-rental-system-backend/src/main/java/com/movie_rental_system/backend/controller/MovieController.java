@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/movies")
@@ -30,8 +31,13 @@ public class MovieController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Movie>> getAllMovies(){
-        return ResponseEntity.ok(movieService.getAll());
+    public ResponseEntity<Set<Movie>> getAllMovies(@RequestParam(value = "genre", required = false) String genre,
+                                                   @RequestParam(value = "title", required = false) String title,
+                                                   @RequestParam(value = "year", required = false) String yearRange,
+                                                   @RequestParam(value = "rating", required = false) String ratingRange,
+                                                   @RequestParam(value = "director", required = false) String director,
+                                                   @RequestParam(value = "price", required = false) String priceRange){
+        return ResponseEntity.ok(movieService.getQueriedMovies(genre, director, title, yearRange, ratingRange, priceRange));
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

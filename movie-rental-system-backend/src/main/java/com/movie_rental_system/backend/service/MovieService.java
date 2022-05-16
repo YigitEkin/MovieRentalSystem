@@ -2,8 +2,6 @@ package com.movie_rental_system.backend.service;
 
 import com.movie_rental_system.backend.dto.MovieDTO;
 import com.movie_rental_system.backend.entity.*;
-import com.movie_rental_system.backend.exception.CustomerNotFoundException;
-import com.movie_rental_system.backend.exception.InvalidDateFormatException;
 import com.movie_rental_system.backend.exception.MovieNotFoundException;
 import com.movie_rental_system.backend.repository.DeletedMovieRepository;
 import com.movie_rental_system.backend.repository.MovieRepository;
@@ -11,7 +9,6 @@ import com.movie_rental_system.backend.repository.MovieReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -40,6 +37,96 @@ public class MovieService {
                 movie.setAvg_rating(averageRating);
         }
         return movies;
+    }
+
+    public Set<Movie> getQueriedMovies(String genre, String director, String title, String yearRange, String ratingRange, String priceRange){
+        HashSet<Movie> finalMovies = new HashSet<>();
+        HashSet<Movie> queriedMovies = new HashSet<>();
+        if(genre == null && director == null && title == null && yearRange == null && ratingRange == null && priceRange == null){
+            finalMovies.addAll(getAll());
+        }
+        if(genre != null){
+            finalMovies.addAll(movieRepository.findByGenre(genre));
+            if(finalMovies.isEmpty())
+                return finalMovies;
+        }
+        if(director != null){
+            queriedMovies.addAll(movieRepository.findByDirector(director));
+            if(finalMovies.size() > 0)
+                finalMovies.retainAll(queriedMovies);
+            else
+                finalMovies.addAll(queriedMovies);
+            if(finalMovies.isEmpty())
+                return finalMovies;
+        }
+        if(title != null){
+            queriedMovies.clear();
+            queriedMovies.addAll(movieRepository.findByTitleContains(title));
+            if(finalMovies.size() > 0)
+                finalMovies.retainAll(queriedMovies);
+            else
+                finalMovies.addAll(queriedMovies);
+            if(finalMovies.isEmpty())
+                return finalMovies;
+        }
+        if(yearRange != null){
+            queriedMovies.clear();
+            String[] yearRangeArray = yearRange.split("-");
+            if(yearRangeArray.length != 2)
+                queriedMovies.addAll(movieRepository.findByYear(Integer.parseInt(yearRange)));
+            else
+                queriedMovies.addAll(movieRepository.findByYearRange(Integer.parseInt(yearRangeArray[0]), Integer.parseInt(yearRangeArray[1])));
+            if(finalMovies.size() > 0)
+                finalMovies.retainAll(queriedMovies);
+            else
+                finalMovies.addAll(queriedMovies);
+            if(finalMovies.isEmpty())
+                return finalMovies;
+        }
+        if(priceRange != null){
+            queriedMovies.clear();
+            String[] priceRangeArray = priceRange.split("-");
+            if(priceRangeArray.length != 2)
+                queriedMovies.addAll(movieRepository.findByPrice(Double.parseDouble(priceRange)));
+            else
+                queriedMovies.addAll(movieRepository.findByPriceRange(Double.parseDouble(priceRangeArray[0]), Double.parseDouble(priceRangeArray[1])));
+            if(finalMovies.size() > 0)
+                finalMovies.retainAll(queriedMovies);
+            else
+                finalMovies.addAll(queriedMovies);
+            if(finalMovies.isEmpty())
+                return finalMovies;
+        }
+        // setting the average rating for each movie
+        for(Movie movie : finalMovies){
+            Double averageRating = movieReviewRepository.getAverageRating(movie.getMovie_id());
+            if(averageRating != null)
+                movie.setAvg_rating(averageRating);
+        }
+        // raiting filtering
+        if(ratingRange != null){
+            queriedMovies.clear();
+            String[] ratingRangeArray = ratingRange.split("-");
+            if(ratingRangeArray.length != 2){
+                for(Movie movie : finalMovies){
+                    if(movie.getAvg_rating() == Double.parseDouble(ratingRange))
+                        queriedMovies.add(movie);
+                }
+            }
+            else{
+                for(Movie movie : finalMovies){
+                    if(movie.getAvg_rating() >= Double.parseDouble(ratingRangeArray[0]) && movie.getAvg_rating() <= Double.parseDouble(ratingRangeArray[1]))
+                        queriedMovies.add(movie);
+                }
+            }
+            if(finalMovies.size() > 0)
+                finalMovies.retainAll(queriedMovies);
+            else
+                finalMovies.addAll(queriedMovies);
+            if(finalMovies.isEmpty())
+                return finalMovies;
+        }
+        return finalMovies;
     }
 
     public Movie findByMovieId(Integer id){
