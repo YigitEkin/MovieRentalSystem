@@ -18,20 +18,23 @@ public class CustomerService {
     private final NewCustomerRepository newCustomerRepository;
     private final RepeatCustomerRepository repeatCustomerRepository;
     private final MovieRepository movieRepository;
+    private final MovieReviewRepository movieReviewRepository;
 
     @Autowired
-    public CustomerService(UserRepository userRepository, CustomerRepository customerRepository, NewCustomerRepository newCustomerRepository, RepeatCustomerRepository repeatCustomerRepository, MovieRepository movieRepository) {
+    public CustomerService(UserRepository userRepository, CustomerRepository customerRepository, NewCustomerRepository newCustomerRepository, RepeatCustomerRepository repeatCustomerRepository, MovieRepository movieRepository, MovieReviewRepository movieReviewRepository) {
         this.userRepository = userRepository;
         this.customerRepository = customerRepository;
         this.newCustomerRepository = newCustomerRepository;
         this.repeatCustomerRepository = repeatCustomerRepository;
         this.movieRepository = movieRepository;
+        this.movieReviewRepository = movieReviewRepository;
     }
 
     // adds a new customer to the database (all customers are new customers by default)
     public Customer createCustomer(NewCustomer newCustomer) {
         if (userRepository.existsById(newCustomer.getUser_name()))
             throw new UserAlreadyExistsException("User with name " + newCustomer.getUser_name() + " already exists");
+        newCustomer.setBalance(new Double(100));
         return newCustomerRepository.save(newCustomer);
     }
 
@@ -129,6 +132,12 @@ public class CustomerService {
         Customer customer = customerRepository.findById(customer_name).orElse(null);
         if (customer == null)
             throw new CustomerNotFoundException("Customer with name " + customer_name + " not found");
+        List<Movie> movies = customer.getRentedMoviesM();
+        for(Movie movie : movies){
+            Double averageRating = movieReviewRepository.getAverageRating(movie.getMovie_id());
+            if(averageRating != null)
+                movie.setAvg_rating(averageRating);
+        }
         return customer.getRentedMoviesM();
     }
 
@@ -150,6 +159,7 @@ public class CustomerService {
         }
         customer.getRentedMovies().add(new Rent(customer, movie));
         customer.setBalance((customer.getBalance() - movie.getPrice()));
+        System.out.println(customer.getBalance());
         customerRepository.save(customer);
         return movie;
     }

@@ -1,44 +1,73 @@
+import axios from "axios";
 import React, { useState, useContext, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Context } from "../../App";
 import Navbar from "../../Components/NavbarCustomer";
 
-const tempUsers = [
-  {
-    id: 1,
-    user_name: "John",
-  },
-  {
-    id: 2,
-    user_name: "Jane",
-  },
-  {
-    id: 3,
-    user_name: "Jack",
-  },
-  {
-    id: 4,
-    user_name: "Jill",
-  },
-];
-
 const Recommendmovie = () => {
   const [state, dispatch] = useContext(Context);
-  const [friends, setFriends] = useState(tempUsers);
+  const navigate = useNavigate();
+  const [friends, setFriends] = useState([]);
   const title = useRef(null);
   const friend = useRef(null);
   const message = useRef(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const recommendation = {
-      recommending_user: state.user_name,
-      recommended_user: friend.current.value,
-      movie_title: title.current.value,
-      message: message.current.value,
-    };
-    //TODO: send recommendation to backend
+    let movies = [];
+    axios
+      .get(`http://localhost:8081/movies`)
+      .then((res) => {
+        movies = res.data.filter((movie) => {
+          return (
+            movie.movie_title.toLowerCase() ===
+            title.current.value.toLowerCase()
+          );
+        });
+        console.log(movies);
+        const recommendation = {
+          recommend_id: 0,
+          recommender_user_name: state.user_name,
+          recommended_user_name: friend.current.value,
+          movie_id: movies[0].movie_id,
+          message: message.current.value,
+        };
+
+        axios
+          .post(`http://localhost:8081/recommends`, recommendation)
+          .then((res) => {
+            alert("Recommendation sent successfully");
+            console.log(res);
+          })
+          .catch((err) => {
+            alert("Invalid input");
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
+  //!const user = friend_name !== state.user_name ? customer_name : friend_name;
+  useEffect(() => {
+    if (state.user_name === null) {
+      navigate("/");
+    }
+    axios
+      .get(`http://localhost:8081/customers/${state.user_name}/friends`)
+      .then((res) => {
+        console.log(res.data, "friends");
+        const filteredFriends = res.data.map((friend) => {
+          const { friend_name, customer_name } = friend;
+          return friend_name === state.user_name ? customer_name : friend_name;
+        });
+        console.log(filteredFriends, "filteredFriends");
+        setFriends(filteredFriends);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   return (
     <>
       <Navbar name={state.user_name} />
@@ -86,8 +115,8 @@ const Recommendmovie = () => {
                         >
                           {friends.map((user) => {
                             return (
-                              <option key={user.id} value={user.user_name}>
-                                {user.user_name}
+                              <option key={user} value={user}>
+                                {user}
                               </option>
                             );
                           })}

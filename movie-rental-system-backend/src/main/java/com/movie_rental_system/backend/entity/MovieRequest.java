@@ -20,6 +20,7 @@ public class MovieRequest {
     @NonNull
     private String movie_title;
     private int production_year;
+    private String description;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "customer_name")

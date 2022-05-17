@@ -162,6 +162,7 @@ public class CustomerController {
 
     // create movie favorite of a customer
     @PostMapping("/{customer_name}/favorites/{movie_id}")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<Movie> createMovieFavorite(@PathVariable String customer_name, @PathVariable Integer movie_id) {
         return ResponseEntity.ok(customerService.addFavoriteMovie(customer_name, movie_id));
     }

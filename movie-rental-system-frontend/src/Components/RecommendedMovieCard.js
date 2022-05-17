@@ -4,6 +4,7 @@ import "../stylesheets/MovieCard.css";
 import Reviewsmodal from "./ReviewsModal";
 import { useContext } from "react";
 import { Context } from "../App";
+import axios from "axios";
 
 const RecommendedMovieCard = ({
   img_url,
@@ -14,7 +15,6 @@ const RecommendedMovieCard = ({
   director,
   genre,
   price,
-  actors,
   id,
   name,
   recommended_user,
@@ -35,19 +35,17 @@ const RecommendedMovieCard = ({
   };
 
   const [isFavourite, setIsFavourite] = useState(false);
+  const [actors, setactors] = useState([]);
   useEffect(() => {
-    //fetch whether the movie is favourite or not
+    axios
+      .get(`http://localhost:8081/movies/${id}/actors`)
+      .then((res) => {
+        setactors(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
-
-  useEffect(() => {
-    //if isFavourite is true, remove the movie from favourites in the backend
-    //else add the movie to favourites in the backend
-    if (isFavourite) {
-      //add to favourites
-    } else {
-      //remove from favourites
-    }
-  }, [isFavourite]);
 
   return (
     <div className="card box-shadow-card mx-auto my-5">

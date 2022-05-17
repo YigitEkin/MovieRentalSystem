@@ -4,70 +4,60 @@ import Logo from "../../images/gora.jpeg";
 import DeleteMovieCard from "../../Components/DeleteMovieCard";
 import { useContext } from "react";
 import { Context } from "../../App";
-
-const tempMovies = [
-  {
-    id: 1,
-    img_url: Logo,
-    title: "abc",
-    rating: 8.1,
-    description:
-      "A slick young Turk kidnapped by extraterrestrials shows his great « humanitarian spirit » by outwitting the evil commander-in-chief of the planet of G.O.R.A.",
-    year: 2003,
-    director: "Ömer Faruk Sorak",
-    genre: "Comedy",
-  },
-  {
-    id: 2,
-    img_url: Logo,
-    title: "abcde",
-    rating: 8.1,
-    description:
-      "A slick young Turk kidnapped by extraterrestrials shows his great « humanitarian spirit » by outwitting the evil commander-in-chief of the planet of G.O.R.A.",
-    year: 2003,
-    director: "Ömer Faruk Sorak",
-    genre: "Comedy",
-  },
-  {
-    id: 3,
-    img_url: Logo,
-    title: "abcdef",
-    rating: 8.1,
-    description:
-      "A slick young Turk kidnapped by extraterrestrials shows his great « humanitarian spirit » by outwitting the evil commander-in-chief of the planet of G.O.R.A.",
-    year: 2003,
-    director: "Ömer Faruk Sorak",
-    genre: "Comedy",
-  },
-];
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const DeleteMovie = () => {
   const [state, dispatch] = useContext(Context);
-  const [movies, setMovies] = useState(tempMovies);
+  const navigate = useNavigate();
+  const [movies, setMovies] = useState([]);
   const [filteredMovies, setfilteredMovies] = useState(movies);
   const searchBar = useRef(null);
 
   useEffect(() => {
+    if (state.user_name === null) {
+      navigate("/");
+    }
+    axios
+      .get("http://localhost:8081/movies")
+      .then((res) => {
+        setMovies(res.data);
+        setfilteredMovies(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     // fetching all movies
   }, []);
 
   const handleSearch = () => {
     const searchValue = searchBar.current.value;
     const filteredMovies = movies.filter((movie) => {
-      return movie.title.toLowerCase().includes(searchValue.toLowerCase());
+      return movie.movie_title
+        .toLowerCase()
+        .includes(searchValue.toLowerCase());
     });
     setfilteredMovies(filteredMovies);
   };
 
   function handleDelete(id) {
+    axios
+      .delete(`http://localhost:8081/movies/${id}`)
+      .then((res) => {
+        console.log(res);
+        alert("Movie deleted successfully");
+      })
+      .catch((err) => {
+        console.log(err.response);
+        alert("Movie not deleted");
+      });
+
     const filteredMovies = movies.filter((movie) => {
-      return movie.id !== id;
+      return movie.movie_id !== id;
     });
     setMovies(filteredMovies);
     setfilteredMovies(filteredMovies);
     searchBar.current.value = "";
-    alert("Movie deleted successfully");
-    //TODO: delete movie from database
   }
 
   return (
@@ -96,14 +86,14 @@ const DeleteMovie = () => {
               return (
                 <DeleteMovieCard
                   img_url={movie.img_url}
-                  title={movie.title}
+                  title={movie.movie_title}
                   description={movie.description}
-                  rating={movie.rating}
-                  year={movie.year}
+                  rating={movie.avg_rating}
+                  year={movie.production_year}
                   director={movie.director}
                   genre={movie.genre}
                   deleteHandler={handleDelete}
-                  id={movie.id}
+                  id={movie.movie_id}
                 />
               );
             })

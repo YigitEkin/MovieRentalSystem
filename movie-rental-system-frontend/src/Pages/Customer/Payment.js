@@ -3,6 +3,8 @@ import "../../stylesheets/Payment.css";
 import Navbar from "../../Components/NavbarCustomer";
 import { useContext, useState, useRef, useEffect } from "react";
 import { Context } from "../../App";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const cardsTemp = [
   {
@@ -29,10 +31,17 @@ function Payment() {
 
   const [cards, setCards] = useState(cardsTemp);
   const [state, dispatch] = useContext(Context);
-  const cartTotal = state.cart.reduce((total, movie) => {
+  const navigate = useNavigate();
+  let cartTotal = state.cart.reduce((total, movie) => {
     return total + movie.price;
   }, 0);
+  cartTotal = cartTotal || 0;
 
+  useEffect(() => {
+    if (state.user_name === null) {
+      navigate("/");
+    }
+  }, []);
   return (
     <div className="allpage">
       <Navbar name={state.user_name} />
@@ -53,6 +62,7 @@ function Payment() {
             <h1 className="display-4 text-center text-red">Cart Is Empty!</h1>
           )}
 
+          {console.log(state.cart)}
           {state.cart.length > 0
             ? state.cart.map((item) => (
                 <div
@@ -74,12 +84,27 @@ function Payment() {
                     <button
                       className="btn btn-success btn-lg mr-4"
                       onClick={() => {
-                        dispatch({
-                          type: "RENT_MOVIE",
-                          payload: { id: item.id, price: item.price },
-                        });
-                        //TODO: remove from cart in backend
-                        //TODO: rent the movie in backend
+                        if (state.budget - cartTotal < 0) {
+                          alert("Budget is not enough!");
+                        } else {
+                          dispatch({
+                            type: "RENT_MOVIE",
+                            payload: { id: item.id, price: item.price },
+                          });
+                          axios
+                            .post(
+                              `http://localhost:8081/customers/${state.user_name}/rents/${item.id}`
+                            )
+                            .then((res) => {
+                              console.log(res.data);
+                              alert("Movie rented successfully!");
+                            })
+                            .catch((err) => {
+                              console.log(err);
+                              alert("Unsuccessful Rent!");
+                            });
+                          //TODO: rent the movie in backend
+                        }
                       }}
                     >
                       Rent
@@ -110,25 +135,27 @@ function Payment() {
                       <h5 class="card-title">My Cards</h5>
                     </div>
                     <ul class="list-group list-group-flush">
-                      {cards.length > 0 ? (
-                        cards.map((card) => (
-                          <li class="list-group-item d-flex">
-                            <h6 className="card-title">{card.holder_name}</h6>
-                            <div className="ml-auto">
-                              <button
-                                className="btn btn-red"
-                                onClick={() => {
-                                  const cardtemp = cards.filter(
-                                    (card2) => card2.card_id !== card.card_id
-                                  );
-                                  setCards(cardtemp);
-                                }}
-                              >
-                                Remove
-                              </button>
-                            </div>
-                          </li>
-                        ))
+                      {cards?.length > 0 ? (
+                        cards.map((card) =>
+                          card !== undefined ? (
+                            <li class="list-group-item d-flex">
+                              <h6 className="card-title">{card.holder_name}</h6>
+                              <div className="ml-auto">
+                                <button
+                                  className="btn btn-red"
+                                  onClick={() => {
+                                    const cardtemp = cards.filter(
+                                      (card2) => card2.card_id !== card.card_id
+                                    );
+                                    setCards(cardtemp);
+                                  }}
+                                >
+                                  Remove
+                                </button>
+                              </div>
+                            </li>
+                          ) : null
+                        )
                       ) : (
                         <h1 className="display-4 text-center text-red">
                           No Cards!

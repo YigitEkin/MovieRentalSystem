@@ -1,4 +1,14 @@
-function ActorsModal({ actors, id }) {
+import axios from "axios";
+import { useEffect, useState } from "react";
+function ActorsModal({ id }) {
+  const [actors, setActors] = useState([]);
+
+  useEffect(() => {
+    axios.get(`http://localhost:8081/movies/${id}/actors`).then((res) => {
+      console.log(res.data, "actors");
+      setActors(res.data);
+    });
+  }, []);
   return (
     <>
       <button
@@ -33,7 +43,11 @@ function ActorsModal({ actors, id }) {
             <div className="modal-body">
               {actors?.length > 0 ? (
                 actors.map((item, index) => {
-                  return <h1 key={index}>{`${index + 1}) ${item}`}</h1>;
+                  return (
+                    <div key={index}>
+                      <p>{item.actor_name}</p>
+                    </div>
+                  );
                 })
               ) : (
                 <h1>No Actors</h1>

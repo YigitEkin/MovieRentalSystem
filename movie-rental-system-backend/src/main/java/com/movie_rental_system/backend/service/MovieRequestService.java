@@ -1,5 +1,6 @@
 package com.movie_rental_system.backend.service;
 
+import com.movie_rental_system.backend.dto.MovieRequestDTO;
 import com.movie_rental_system.backend.entity.Card;
 import com.movie_rental_system.backend.entity.MovieRequest;
 import com.movie_rental_system.backend.repository.CardRepository;
@@ -14,10 +15,12 @@ import java.util.Objects;
 @Service
 public class MovieRequestService {
     private final MovieRequestRepository movieRequestRepository;
+    private final CustomerRepository customerRepository;
 
     @Autowired
-    public MovieRequestService(MovieRequestRepository repo) {
+    public MovieRequestService(MovieRequestRepository repo, CustomerRepository customerRepository) {
         this.movieRequestRepository = repo;
+        this.customerRepository =  customerRepository;
     }
 
     // get all
@@ -36,9 +39,10 @@ public class MovieRequestService {
     }
 
     // create
-    public MovieRequest creatMovieRequest(MovieRequest movieRequest) {
+    public MovieRequest creatMovieRequest(MovieRequestDTO movieRequest) {
         Objects.requireNonNull(movieRequest, "movie request cannot be null");
-        return movieRequestRepository.save(movieRequest);
+        return movieRequestRepository.save(new MovieRequest(movieRequest.getRequest_id(), movieRequest.getMovie_title(), movieRequest.getProduction_year(),
+                movieRequest.getDescription(), customerRepository.findById(movieRequest.getCustomer_name()).get()));
     }
 
     // delete

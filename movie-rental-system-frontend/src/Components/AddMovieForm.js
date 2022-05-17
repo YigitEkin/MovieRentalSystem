@@ -7,7 +7,7 @@ import React from "react";
 //image
 //price
 
-const Addmovieform = ({ handleAddMovie }) => {
+const Addmovieform = ({ handleAddMovie, sendAcceptRequest }) => {
   const [state, dispatch] = useContext(Context);
   const title = useRef(null);
   const director = useRef(null);
@@ -63,8 +63,10 @@ const Addmovieform = ({ handleAddMovie }) => {
         director.current.value,
         genre.current.value,
         +price.current.value,
-        state.user_name
+        state.user_name,
+        handleActors()
       );
+      sendAcceptRequest(movie);
 
       title.current.value = "";
       director.current.value = "";

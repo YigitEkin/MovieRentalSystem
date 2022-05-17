@@ -4,10 +4,12 @@ import Navbar from "../../Components/NavbarCustomer";
 import MovieCard from "../../Components/MovieCard";
 import { useContext } from "react";
 import { Context } from "../../App";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const SearchMovie = () => {
   const [state, dispatch] = useContext(Context);
+  const navigate = useNavigate();
   const [filter, setFilter] = useState("");
   const [price, setPrice] = useState(false);
   const [rating, setRating] = useState(false);
@@ -26,6 +28,9 @@ const SearchMovie = () => {
   }, [filter]);
 
   useEffect(() => {
+    if (state.user_name === null) {
+      navigate("/");
+    }
     axios
       .get("http://localhost:8081/movies")
       .then((res) => {

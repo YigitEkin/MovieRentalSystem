@@ -18,7 +18,7 @@ import java.util.List;
 @PrimaryKeyJoinColumn(name = "customer_name")
 @NoArgsConstructor
 public class Customer extends User {
-    private double balance;
+    private Double balance;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     @JsonIgnore

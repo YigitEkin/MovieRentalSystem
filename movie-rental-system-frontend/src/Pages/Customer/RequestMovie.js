@@ -1,13 +1,22 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import Navbar from "../../Components/NavbarCustomer";
 import { useContext } from "react";
 import { Context } from "../../App";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Requestmovie = () => {
   const [state, dispatch] = useContext(Context);
+  const navigate = useNavigate();
   const titleRef = useRef(null);
   const descriptionRef = useRef(null);
   const yearRef = useRef(null);
+
+  useEffect(() => {
+    if (state.user_name === null) {
+      navigate("/");
+    }
+  }, []);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -18,14 +27,22 @@ const Requestmovie = () => {
     ) {
       alert("Please fill in all fields");
     } else {
-      const obj = {
-        title: titleRef.current.value,
+      const request = {
+        movie_title: titleRef.current.value,
         description: descriptionRef.current.value,
-        year: +yearRef.current.value,
-        user: state.user_name,
-        //id: user.id,
+        production_year: +yearRef.current.value,
+        customer_name: state.user_name,
+        request_id: 0,
       };
-      //axios
+      axios
+        .post("http://localhost:8081/movie_requests", request)
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("Cannot made movie request");
+        });
     }
   }
   return (

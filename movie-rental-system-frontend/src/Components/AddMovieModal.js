@@ -36,7 +36,10 @@ const Addmoviemodal = ({ sendAcceptRequest, handleAddMovie }) => {
               </button>
             </div>
             <div className="">
-              <AddMovieForm handleAddMovie={handleAddMovie} />
+              <AddMovieForm
+                handleAddMovie={handleAddMovie}
+                sendAcceptRequest={sendAcceptRequest}
+              />
             </div>
           </div>
         </div>

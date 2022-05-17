@@ -2,34 +2,46 @@ import React, { useState, useEffect, useRef } from "react";
 import Navbar from "../../Components/NavbarEmployee";
 import { useContext } from "react";
 import { Context } from "../../App";
+import axioss from "axios";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const tempUsers = [
-  {
-    id: 1,
-    user_name: "John",
-  },
-  {
-    id: 2,
-    user_name: "Jane",
-  },
-  {
-    id: 3,
-    user_name: "Jack",
-  },
-  {
-    id: 4,
-    user_name: "Jill",
-  },
-];
-
-const AddFriend = () => {
+const AddFriend = ({ id }) => {
   const [state, dispatch] = useContext(Context);
-  const [users, setusers] = useState(tempUsers);
+  const [users, setusers] = useState([]);
   const [filteredUsers, setfilteredUsers] = useState(users);
   const searchBar = useRef(null);
 
   useEffect(() => {
-    // fetching all users
+    axios
+      .get(`http://localhost:8081/customers`)
+      .then((res) => {
+        const users = res.data.filter((user) => user.user_name !== id);
+        axios
+          .get(`http://localhost:8081/customers/${state.user_name}/friends`)
+          .then((res) => {
+            const friends = res.data;
+            const filteredUsers = users.filter((user) => {
+              let found = false;
+              friends.forEach((friend) => {
+                if (
+                  friend.customer_name === user.user_name ||
+                  user.user_name === friend.friend_name
+                ) {
+                  found = true;
+                }
+              });
+              if (!found) {
+                return user;
+              }
+            });
+            setusers(filteredUsers);
+            setfilteredUsers(filteredUsers);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   const handleSearch = () => {
@@ -42,13 +54,17 @@ const AddFriend = () => {
 
   function handleDelete(id) {
     const filteredUsers = users.filter((user) => {
-      return user.id !== id;
+      return user.user_name !== id;
     });
+    axios.post(`http://localhost:8081/friends`, {
+      customer_name: state.user_name,
+      friend_name: id,
+      friend_request_date: new Date(),
+    });
+
     setusers(filteredUsers);
     setfilteredUsers(filteredUsers);
     searchBar.current.value = "";
-    alert("added friend successfully");
-    //TODO: delete user from database
   }
 
   return (
@@ -87,7 +103,7 @@ const AddFriend = () => {
                 <div className="card-body d-flex justify-content-center">
                   <button
                     className="btn btn-success btn-lg"
-                    onClick={() => handleDelete(user.id)}
+                    onClick={() => handleDelete(user.user_name)}
                   >
                     Add Friend
                   </button>

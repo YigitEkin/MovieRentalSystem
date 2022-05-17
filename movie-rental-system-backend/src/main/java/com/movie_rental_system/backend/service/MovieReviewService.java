@@ -89,9 +89,14 @@ public class MovieReviewService {
             throw new RuntimeException("Movie with id " + movieReview.getMovie_id() + " not found");
 
         try {
-            return movieReviewRepository.save(
-                    new MovieReview(0L, movie, customer, movieReview.getRating(), movieReview.getReview_message(),
-                            movieReview.isSpoiler(), movieReview.getNet_like(), new SimpleDateFormat("yyyy-MM-dd").parse(movieReview.getReview_date())));
+            movieReviewToUpdate.setMovie(movie);
+            movieReviewToUpdate.setCustomer(customer);
+            movieReviewToUpdate.setRating(movieReview.getRating());
+            movieReviewToUpdate.setReview_message(movieReview.getReview_message());
+            movieReviewToUpdate.setSpoiler(movieReview.isSpoiler());
+            movieReviewToUpdate.setNet_like(movieReview.getNet_like());
+            movieReviewToUpdate.setReview_date( new SimpleDateFormat("yyyy-MM-dd").parse(movieReview.getReview_date()));
+            return movieReviewRepository.save(movieReviewToUpdate);
         } catch (ParseException e) {
             throw new InvalidDateFormatException("Invalid date format: " + movieReview.getReview_date() + " should be yyyy-MM-dd");
         }

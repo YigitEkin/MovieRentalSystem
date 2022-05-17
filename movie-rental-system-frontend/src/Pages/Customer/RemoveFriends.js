@@ -2,33 +2,31 @@ import React from "react";
 import Navbar from "../../Components/NavbarCustomer";
 import { useContext, useState, useRef, useEffect } from "react";
 import { Context } from "../../App";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const friendsTemp = [
-  {
-    id: 1,
-    user_name: "John",
-  },
-  {
-    id: 2,
-    user_name: "Jane",
-  },
-  {
-    id: 3,
-    user_name: "Jack",
-  },
-  {
-    id: 4,
-    user_name: "Jill",
-  },
-];
-
-const RemoveFriends = () => {
+const RemoveFriends = ({ id }) => {
   const [state, dispatch] = useContext(Context);
-  const [friends, setFriends] = useState(friendsTemp);
+  const navigate = useNavigate();
+  const [friends, setFriends] = useState([]);
   const [filteredFriends, setfilteredFriends] = useState(friends);
   const searchBar = useRef(null);
 
   useEffect(() => {
+    if (state.user_name === null) {
+      navigate("/");
+    }
+
+    axios
+      .get(`http://localhost:8081/customers/${state.user_name}/friends`)
+      .then((res) => {
+        setFriends(res.data);
+        setfilteredFriends(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     // fetching all users
   }, []);
 
@@ -40,14 +38,35 @@ const RemoveFriends = () => {
     setfilteredFriends(filteredUsers);
   };
 
-  function handleDelete(id) {
+  function handleDelete(friendship) {
+    const friend_name = friendship.friend_name;
+    const customer_name = friendship.customer_name;
+    /*
     const filteredUsers = friends.filter((user) => {
-      return user.id !== id;
+      return (
+        user.customer_name !== friend_name ||
+        user.friend_name !== friend_name ||
+        user.customer_name !== customer_name ||
+        user.friend_name !== customer_name
+      );
     });
     setFriends(filteredUsers);
     setfilteredFriends(filteredUsers);
-    searchBar.current.value = "";
-    alert("removed friend successfully");
+    */
+    const user = friend_name !== state.user_name ? customer_name : friend_name;
+    console.log(user);
+    axios
+      .delete(`http://localhost:8081/customers/${user}/friends/${friend_name}`)
+      .then((res) => {
+        console.log(res);
+        searchBar.current.value = "";
+        alert("removed friend successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Cannot delete friend");
+      });
+
     //TODO: delete user from database
   }
 
@@ -82,12 +101,19 @@ const RemoveFriends = () => {
                     fontSize: "1.5rem",
                   }}
                 >
-                  {user.user_name}
+                  {user.friend_name === state.user_name
+                    ? user.customer_name
+                    : user.friend_name}
                 </div>
                 <div className="card-body d-flex justify-content-center">
                   <button
                     className="btn btn-danger btn-lg"
-                    onClick={() => handleDelete(user.id)}
+                    onClick={() =>
+                      handleDelete({
+                        customer_name: user.customer_name,
+                        friend_name: user.friend_name,
+                      })
+                    }
                   >
                     Remove Friend
                   </button>

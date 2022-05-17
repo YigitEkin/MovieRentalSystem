@@ -33,7 +33,6 @@ const Login = () => {
             navigate("/customer/mainPage");
             dispatch({ type: "SET_USER_ID", payload: customers.user_name });
             dispatch({ type: "SET_USER_NAME", payload: customers.user_name });
-            dispatch({ type: "SET_CART", payload: [] });
             dispatch({ type: "SET_BUDGET", payload: customers.balance });
           } else {
             alert("Wrong Password");

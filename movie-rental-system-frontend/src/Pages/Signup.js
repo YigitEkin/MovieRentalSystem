@@ -28,9 +28,16 @@ const SignUp = () => {
       promotion_code: "aaaa",
     };
     console.log(user);
-    axios.post("http://localhost:8081/customers", user).then((res) => {
-      console.log(res);
-    });
+    axios
+      .post("http://localhost:8081/customers", user)
+      .then((res) => {
+        alert("Signup Successful");
+        console.log(res);
+      })
+      .catch((err) => {
+        alert("Signup Failed");
+        console.log("error in signup", err);
+      });
   }
 
   return (

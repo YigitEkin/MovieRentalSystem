@@ -7,12 +7,14 @@ import com.movie_rental_system.backend.service.ActorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/actors")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ActorController {
     private final ActorService actorService;
 

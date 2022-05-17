@@ -13,7 +13,15 @@ const DeleteMovieCard = ({
   id,
 }) => (
   <div className="card m-auto mb-2">
-    <img src={img_url} className="card-img-top img" alt="..." />
+    <img
+      src={
+        img_url === undefined
+          ? "https://static.wikia.nocookie.net/gora/images/3/39/Er%C5%9FanKuneriDizi.jpeg/revision/latest/top-crop/width/360/height/450?cb=20210619132146&path-prefix=tr"
+          : img_url
+      }
+      className="card-img-top img"
+      alt="..."
+    />
     <div className="card-body">
       <div className="row">
         <h5 className="card-title col-6">{title}</h5>
