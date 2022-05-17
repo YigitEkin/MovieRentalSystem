@@ -1,7 +1,7 @@
 # MovieRentalSystem
 <hr>
 <h1>This is a project made for the CS353 course (Database Design and Systems).</h1>
-<code>Project document website: https://cs353-group20-project-page.netlify.app</code>
+<a href="https://cs353-group20-project-page.netlify.app">Project document website/code>
 <h2>The project is the implementation of a movie rental system where</h2>
 <hr>
 <h3>In this application the user can do the following:</h3>
