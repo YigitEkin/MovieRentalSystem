@@ -20,4 +20,6 @@ public class MovieDTO {
     private String employee_name;
 
     private List<Integer> actors;
+
+    private String img_url;
 }

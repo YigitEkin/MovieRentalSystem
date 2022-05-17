@@ -39,6 +39,14 @@ const Addmovieform = ({ handleAddMovie, sendAcceptRequest }) => {
   };
 
   function addMovie() {
+    console.log(title.current.value, "title");
+    console.log(director.current.value, "director");
+    console.log(year.current.value, "year");
+    console.log(genre.current.value, "genre");
+    console.log(actors.current.value, "actors");
+    console.log(price, "price");
+    console.log(image.current.value, "image");
+
     const isFormValid =
       handleActors() !== null &&
       title.current.value !== "" &&
@@ -46,8 +54,10 @@ const Addmovieform = ({ handleAddMovie, sendAcceptRequest }) => {
       year.current.value !== "" &&
       genre.current.value !== "" &&
       actors.current.value !== "" &&
-      price.current.value !== "";
+      price.current?.value !== "" &&
+      image.current.value !== "";
 
+    console.log(isFormValid);
     if (isFormValid) {
       const movie = {
         title: title.current.value,
@@ -56,6 +66,7 @@ const Addmovieform = ({ handleAddMovie, sendAcceptRequest }) => {
         genre: genre.current.value,
         actors: handleActors(),
         price: +price.current.value,
+        image: image.current.value,
       };
       handleAddMovie(
         title.current.value,
@@ -64,7 +75,8 @@ const Addmovieform = ({ handleAddMovie, sendAcceptRequest }) => {
         genre.current.value,
         +price.current.value,
         state.user_name,
-        handleActors()
+        handleActors(),
+        image.current.value
       );
       sendAcceptRequest(movie);
 
@@ -74,6 +86,7 @@ const Addmovieform = ({ handleAddMovie, sendAcceptRequest }) => {
       genre.current.value = "";
       actors.current.value = "";
       price.current.value = "";
+      image.current.value = "";
     } else {
       alert("Bad credentials");
     }
@@ -137,14 +150,22 @@ const Addmovieform = ({ handleAddMovie, sendAcceptRequest }) => {
         />
       </div>
       <div className="form-row">
-        <div className="form-group col-md-12">
+        <div className="form-group col-md-6">
           <label htmlFor="price">Price</label>
           <input
-            type={"number"}
+            type="number"
             min={0}
             placeholder={20.99}
             ref={price}
-            step={0.01}
+            className="form-control"
+            id="price"
+          />
+        </div>
+        <div className="form-group col-md-6">
+          <label htmlFor="price">Image</label>
+          <input
+            type={"text"}
+            ref={image}
             className="form-control"
             id="price"
           />

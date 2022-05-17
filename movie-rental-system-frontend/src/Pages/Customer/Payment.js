@@ -6,30 +6,13 @@ import { Context } from "../../App";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const cardsTemp = [
-  {
-    card_id: 1,
-    card_number: "Visa",
-    exp_date: "12/20",
-    cvv: "123",
-    holder_name: "John Doe",
-  },
-  {
-    card_id: 2,
-    card_number: "Mastercard",
-    exp_date: "12/20",
-    cvv: "123",
-    holder_name: "John Doe2",
-  },
-];
-
 function Payment() {
   const ccv = useRef(null);
   const card_no = useRef(null);
   const holder_name = useRef(null);
   const exp_date = useRef(null);
 
-  const [cards, setCards] = useState(cardsTemp);
+  const [cards, setCards] = useState([]);
   const [state, dispatch] = useContext(Context);
   const navigate = useNavigate();
   let cartTotal = state.cart.reduce((total, movie) => {
@@ -41,7 +24,46 @@ function Payment() {
     if (state.user_name === null) {
       navigate("/");
     }
+    axios
+      .get(`http://localhost:8081/customers/${state.user_name}/cards`)
+      .then((res) => {
+        setCards(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
+
+  const addCard = (e) => {
+    e.preventDefault();
+    const id = cards.length + 1;
+    const card = {
+      card_number: card_no.current.value,
+      exp_date: exp_date.current.value,
+      cvv: ccv.current.value,
+      holder_name: holder_name.current.value,
+      customer_name: state.user_name,
+    };
+    axios
+      .post(`http://localhost:8081/cards`, card)
+      .then((res) => {
+        setCards([...cards, card]);
+      })
+      .catch((err) => {
+        alert("Card already exists");
+      });
+  };
+
+  const removeHandler = (id) => {
+    axios
+      .delete(`http://localhost:8081/cards/${id}`)
+      .then((res) => {
+        setCards(cards.filter((card) => card.card_id !== id));
+      })
+      .catch((err) => {
+        alert("An error occured");
+      });
+  };
   return (
     <div className="allpage">
       <Navbar name={state.user_name} />
@@ -87,10 +109,6 @@ function Payment() {
                         if (state.budget - cartTotal < 0) {
                           alert("Budget is not enough!");
                         } else {
-                          dispatch({
-                            type: "RENT_MOVIE",
-                            payload: { id: item.id, price: item.price },
-                          });
                           axios
                             .post(
                               `http://localhost:8081/customers/${state.user_name}/rents/${item.id}`
@@ -98,10 +116,14 @@ function Payment() {
                             .then((res) => {
                               console.log(res.data);
                               alert("Movie rented successfully!");
+                              dispatch({
+                                type: "RENT_MOVIE",
+                                payload: { id: item.id, price: item.price },
+                              });
                             })
                             .catch((err) => {
                               console.log(err);
-                              alert("Unsuccessful Rent!");
+                              alert("You have  already rented this movie!");
                             });
                           //TODO: rent the movie in backend
                         }
@@ -139,16 +161,11 @@ function Payment() {
                         cards.map((card) =>
                           card !== undefined ? (
                             <li class="list-group-item d-flex">
-                              <h6 className="card-title">{card.holder_name}</h6>
+                              <h6 className="card-title">{`${card.holder_name}'s Credit Card`}</h6>
                               <div className="ml-auto">
                                 <button
                                   className="btn btn-red"
-                                  onClick={() => {
-                                    const cardtemp = cards.filter(
-                                      (card2) => card2.card_id !== card.card_id
-                                    );
-                                    setCards(cardtemp);
-                                  }}
+                                  onClick={() => removeHandler(card.card_id)}
                                 >
                                   Remove
                                 </button>
@@ -166,20 +183,7 @@ function Payment() {
                 </div>
                 <div className="col-8">
                   <h5 class="card-title mx-auto">Add a new card</h5>
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      const id = cards.length + 1;
-                      const card = {
-                        card_id: id,
-                        card_number: card_no.current.value,
-                        exp_date: exp_date.current.value,
-                        cvv: ccv.current.value,
-                        holder_name: holder_name.current.value,
-                      };
-                      setCards([...cards, card]);
-                    }}
-                  >
+                  <form onSubmit={addCard}>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Card Number:</label>
                       <input

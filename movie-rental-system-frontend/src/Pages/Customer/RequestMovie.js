@@ -37,6 +37,7 @@ const Requestmovie = () => {
       axios
         .post("http://localhost:8081/movie_requests", request)
         .then((res) => {
+          alert("Movie request sent");
           console.log(res.data);
         })
         .catch((err) => {

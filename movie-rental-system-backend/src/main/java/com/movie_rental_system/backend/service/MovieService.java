@@ -57,7 +57,8 @@ public class MovieService {
             Actor actor = actorRepository.getById(actorId);
             actorList.add(actor);
         }
-        Movie movie1 = new Movie(movieDTO.getMovie_title(),movieDTO.getProduction_year() ,movieDTO.getDirector(),movieDTO.getGenre(),movieDTO.getPrice(), employeeService.getEmployeeByName(movieDTO.getEmployee_name()), Calendar.getInstance().getTime(),actorList);
+        Movie movie1 = new Movie(movieDTO.getMovie_title(),movieDTO.getProduction_year() ,movieDTO.getDirector(),movieDTO.getGenre(),movieDTO.getPrice(), employeeService.getEmployeeByName(movieDTO.getEmployee_name()), Calendar.getInstance().getTime(),actorList, movieDTO.getImg_url());
+        movie1.setImg_url(movieDTO.getImg_url());
         movieRepository.save(movie1);
         for(Actor actor : actorList){
             actor.getMovies().add(movie1);

@@ -61,7 +61,9 @@ public class Movie implements Serializable {
 
     private Date movie_register_date;
 
-    public Movie(String movie_title, int production_year, String director, String genre, double price, Employee employee, Date time, List<Actor> actors) {
+    private String img_url;
+
+    public Movie(String movie_title, int production_year, String director, String genre, double price, Employee employee, Date time, List<Actor> actors, String img_url) {
         this.movie_title = movie_title;
         this.production_year = production_year;
         this.director = director;

@@ -97,6 +97,7 @@ const SearchMovie = () => {
               price={movie.price}
               actors={movie.actors}
               id={movie.movie_id}
+              img_url={movie.img_url}
             />
           ))
         ) : (

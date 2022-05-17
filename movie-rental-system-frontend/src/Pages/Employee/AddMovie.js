@@ -36,7 +36,8 @@ function AddMovie() {
     genre,
     price,
     employee_name,
-    actors
+    actors,
+    img_url
   ) {
     const newRequests = requests.filter(
       (request) => request.movie_title.toLowerCase() !== title.toLowerCase()
@@ -50,6 +51,7 @@ function AddMovie() {
       price: price,
       employee_name: employee_name,
       actors: [],
+      img_url: img_url,
     };
     let Allactors = [];
     axios
