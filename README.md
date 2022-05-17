@@ -12,7 +12,7 @@ Create an account
 <li>
 Change password
 </li>
-<ul>
+
 <li>
 Make a movie request
 </li>
