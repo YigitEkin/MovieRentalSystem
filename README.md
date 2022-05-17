@@ -8,7 +8,7 @@
 <li>
 Create an account
 </li>
-<ul>
+
 <li>
 Change password
 </li>
